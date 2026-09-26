@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin Portal — School Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body class="page-portal page-admin">
+<div class="app-shell" id="appShell">
+  <div class="menu-overlay" onclick="closeSide()"></div>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark"><img src="assets/img/logo.webp" alt=""></span>School Platform</div>
+    <nav class="side-nav">
+      <button class="nav-item active" data-view="dashboard" onclick="showView('dashboard')"><span class="nav-icon">⌂</span>Dashboard</button>
+      <button class="nav-item" data-view="students" onclick="showView('students')"><span class="nav-icon">👥</span>Students</button>
+      <button class="nav-item" data-view="teachers" onclick="showView('teachers')"><span class="nav-icon">🎓</span>Teachers</button>
+      <button class="nav-item" data-view="classes" onclick="showView('classes')"><span class="nav-icon">▣</span>Classes</button>
+      <button class="nav-item" data-view="fees" onclick="showView('fees')"><span class="nav-icon">💰</span>Fees</button>
+      <button class="nav-item" data-view="attendance" onclick="showView('attendance')"><span class="nav-icon">✓</span>Attendance</button>
+      <button class="nav-item" data-view="announcements" onclick="showView('announcements')"><span class="nav-icon">📢</span>Announcements</button>
+      <button class="nav-item" data-view="messages" onclick="showView('messages')"><span class="nav-icon">💬</span>Messages</button>
+      <button class="nav-item" data-view="settings" onclick="showView('settings')"><span class="nav-icon">⚙</span>Settings</button>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="avatar">FJ</div>
+      <div><strong>Ms. Fatuma Juma</strong><span>School Administrator</span></div>
+    </div>
+    <button class="logout" id="logoutBtn" onclick="logout()"><span aria-hidden="true">⏻</span>Log out<span class="logout-sub">Back to the main site</span></button>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <button class="icon-btn mobile-toggle" onclick="openSide()" aria-label="Open menu">☰</button>
+      <div>
+        <div class="eyebrow" id="topEyebrow">Friday, 25 September 2026</div>
+        <h1 id="topTitle">Good morning, Ms. Juma 👋</h1>
+      </div>
+      <div class="topbar-spacer"></div>
+      <button class="icon-btn" onclick="showToast('No new notifications.')" aria-label="Notifications">🔔<b id="unreadBadge">3</b></button>
+      <div class="avatar">FJ</div>
+    </header>
+
+    <section class="page-content">
+
+      <!-- DASHBOARD -->
+      <div class="view active" id="view-dashboard">
+        <p style="color:var(--muted); margin-bottom:20px;">Whole-school overview for today.</p>
+
+        <div class="kpi-grid">
+          <div class="kpi-card card"><span class="label">Enrolment</span><strong id="kEnrol">&mdash;</strong><span class="sub" id="kEnrolSub">&mdash;</span></div>
+          <div class="kpi-card card"><span class="label">Teaching Staff</span><strong id="kStaff">&mdash;</strong><span class="sub" id="kStaffSub">&mdash;</span></div>
+          <div class="kpi-card card"><span class="label">Term Attendance</span><strong id="kAtt">&mdash;</strong><span class="sub">Across all students</span></div>
+          <div class="kpi-card card"><span class="label">Fees Collected</span><strong id="kFees">&mdash;</strong><span class="sub" id="kFeesSub">&mdash;</span></div>
+        </div>
+
+        <div class="section-title">CLASSES IN SESSION</div>
+        <div class="panel card">
+          <div id="dashClasses"></div>
+        </div>
+
+        <div class="section-title">FEE STANDING</div>
+        <div class="panel card">
+          <div class="fee-grid">
+            <div class="fee-tile"><span>Total Required</span><b id="kTotal">&mdash;</b></div>
+            <div class="fee-tile"><span>Collected</span><b id="kPaid">&mdash;</b></div>
+            <div class="fee-tile due"><span>Outstanding</span><b id="kDue">&mdash;</b></div>
+          </div>
+          <div class="meter"><div class="meter-fill" id="kMeter" style="width:0%"></div></div>
+          <div class="meter-cap"><span id="kCapL">&mdash;</span><span id="kCapR">&mdash;</span></div>
+        </div>
+
+        <div class="section-title">QUICK ACTIONS</div>
+        <div class="quick-grid">
+          <button class="quick-btn" onclick="showView('attendance')"><span class="qi">✓</span>Take Register</button>
+          <button class="quick-btn" onclick="showView('students')"><span class="qi">👥</span>Find a Student</button>
+          <button class="quick-btn" onclick="showView('announcements')"><span class="qi">📢</span>Post Notice</button>
+          <button class="quick-btn" onclick="showView('messages')"><span class="qi">💬</span>Open Messages</button>
+          <button class="quick-btn" onclick="showView('fees')"><span class="qi">💰</span>Fee Balances</button>
+        </div>
+      </div>
+
+      <!-- STUDENTS -->
+      <div class="view" id="view-students">
+        <div id="stuListPane">
+          <h2 style="margin-bottom:4px;">Students</h2>
+          <p style="color:var(--muted); margin-bottom:18px;" id="stuCount">Every enrolled student in the school.</p>
+          <div class="table-toolbar">
+            <div class="search-box">🔎<input type="text" id="stuSearch" placeholder="Search by name, class or ID..." aria-label="Search students" oninput="filterList('stuGrid',this.value)"></div>
+          </div>
+          <div class="child-grid" id="stuGrid"></div>
+        </div>
+
+        <div id="stuDetailPane" hidden>
+          <button type="button" class="back-btn" onclick="closeStudent()">&#8592; Back to all students</button>
+          <div class="panel card" id="stuHead"></div>
+          <div class="tab-row" role="tablist" aria-label="Student sections">
+            <button class="tab-btn active" data-tab="overview" onclick="setTab(this,'overview')">Overview</button>
+            <button class="tab-btn" data-tab="results" onclick="setTab(this,'results')">Results</button>
+            <button class="tab-btn" data-tab="fees" onclick="setTab(this,'fees')">Fees</button>
+            <button class="tab-btn" data-tab="attendance" onclick="setTab(this,'attendance')">Attendance</button>
+          </div>
+          <div class="panel card" id="stuBody"></div>
+        </div>
+      </div>
+
+      <!-- TEACHERS -->
+      <div class="view" id="view-teachers">
+        <h2 style="margin-bottom:4px;">Teachers &amp; Staff</h2>
+        <p style="color:var(--muted); margin-bottom:18px;">Teaching staff and their current class allocation.</p>
+        <div class="staff-grid" id="staffGrid"></div>
+        <div class="section-title">STAFF SUMMARY</div>
+        <div class="panel card">
+          <div class="profile-list" id="staffSummary"></div>
+        </div>
+      </div>
+
+      <!-- CLASSES -->
+      <div class="view" id="view-classes">
+        <h2 style="margin-bottom:4px;">Classes</h2>
+        <p style="color:var(--muted); margin-bottom:18px;">Enrolment and performance for each class.</p>
+        <div class="class-grid" id="classGrid"></div>
+        <div class="section-title">CLASS ROSTERS</div>
+        <div class="panel card">
+          <div class="table-wrap">
+            <table id="classRoster">
+              <thead><tr><th>Class</th><th>Students</th><th>Form Teacher</th><th>Term Attendance</th><th>Mean Average</th></tr></thead>
+              <tbody id="classRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEES -->
+      <div class="view" id="view-fees">
+        <div id="feeSchoolPane">
+          <h2 style="margin-bottom:4px;">Fees</h2>
+          <p style="color:var(--muted); margin-bottom:18px;">Whole-school fee position for the current academic year.</p>
+
+          <div class="section-title">SCHOOL-WIDE SUMMARY</div>
+          <div class="panel card">
+            <div class="fee-grid">
+              <div class="fee-tile"><span>Total Required</span><b id="fTotal">&mdash;</b></div>
+              <div class="fee-tile"><span>Collected</span><b id="fPaid">&mdash;</b></div>
+              <div class="fee-tile due"><span>Outstanding</span><b id="fDue">&mdash;</b></div>
+            </div>
+            <div class="meter"><div class="meter-fill" id="fMeter" style="width:0%"></div></div>
+            <div class="meter-cap"><span id="fCapL">&mdash;</span><span id="fCapR">&mdash;</span></div>
+          </div>
+
+          <div class="section-title">BALANCES BY STUDENT</div>
+          <div class="panel card">
+            <div class="table-toolbar">
+              <div class="search-box">🔎<input type="text" placeholder="Search student..." aria-label="Search fee balances" oninput="filterTable('feeTable',this.value)"></div>
+            </div>
+            <div class="table-wrap">
+              <table id="feeTable">
+                <thead><tr><th>Student</th><th>Class</th><th>Required</th><th>Paid</th><th>Outstanding</th><th>Status</th></tr></thead>
+                <tbody id="feeRows"></tbody>
+              </table>
+            </div>
+            <div class="total-row" id="feeTotalRow"></div>
+          </div>
+        </div>
+
+        <div id="feeStudentPane" hidden>
+          <button type="button" class="back-btn" onclick="unscope('fees')">&#8592; Back to school-wide fees</button>
+          <h2 style="margin-bottom:4px;" id="feeWho">&mdash;</h2>
+          <p style="color:var(--muted); margin-bottom:18px;" id="feeSubWho">&mdash;</p>
+          <div class="panel card">
+            <div class="fee-grid">
+              <div class="fee-tile"><span>Total Required</span><b id="fsTotal">&mdash;</b></div>
+              <div class="fee-tile"><span>Paid</span><b id="fsPaid">&mdash;</b></div>
+              <div class="fee-tile due"><span>Outstanding</span><b id="fsDue">&mdash;</b></div>
+            </div>
+            <div class="meter"><div class="meter-fill" id="fsMeter" style="width:0%"></div></div>
+            <div class="meter-cap"><span id="fsCapL">&mdash;</span><span id="fsCapR">&mdash;</span></div>
+          </div>
+          <div class="section-title">PAYMENT HISTORY</div>
+          <div class="panel card"><div id="fsHistory"></div></div>
+          <div class="save-row" id="fsCta"></div>
+        </div>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="view" id="view-attendance">
+        <div id="attSchoolPane">
+          <h2 style="margin-bottom:4px;">Attendance</h2>
+          <p style="color:var(--muted); margin-bottom:18px;">Whole-school attendance. Term figures and the September register are separate windows and are labelled as such.</p>
+
+          <div class="section-title">TERM TO DATE</div>
+          <div class="panel card">
+            <div class="attendance-summary">
+              <div><strong id="aStudents">&mdash;</strong><span>Students</span></div>
+              <div><strong id="aMean">&mdash;</strong><span>Mean rate</span></div>
+              <div><strong id="aBelow">&mdash;</strong><span>Below 90%</span></div>
+            </div>
+            <div class="adm-note">Term to date covers the whole academic term.</div>
+          </div>
+
+          <div class="section-title">SEPTEMBER 2026 REGISTER</div>
+          <div class="panel card">
+            <div class="attendance-summary">
+              <div><strong id="aPresent">&mdash;</strong><span>Present</span></div>
+              <div><strong id="aAbsent">&mdash;</strong><span>Absent</span></div>
+              <div><strong id="aLate">&mdash;</strong><span>Late</span></div>
+            </div>
+            <div class="adm-note">Month to date, derived from each student's daily register below.</div>
+          </div>
+
+          <div class="section-title">BY STUDENT</div>
+          <div class="panel card">
+            <div class="table-wrap">
+              <table id="attTable">
+                <thead><tr><th>Student</th><th>Class</th><th>Term</th><th>September</th><th></th></tr></thead>
+                <tbody id="attRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="attStudentPane" hidden>
+          <button type="button" class="back-btn" onclick="unscope('attendance')">&#8592; Back to school-wide attendance</button>
+          <h2 style="margin-bottom:4px;" id="attWho">&mdash;</h2>
+          <p style="color:var(--muted); margin-bottom:18px;" id="attSubWho">&mdash;</p>
+          <div class="panel card">
+            <div class="attendance-summary" style="border-top:0;padding-top:0;margin-top:0;">
+              <div><strong id="asPresent">&mdash;</strong><span>Present</span></div>
+              <div><strong id="asAbsent">&mdash;</strong><span>Absent</span></div>
+              <div><strong id="asLate">&mdash;</strong><span>Late</span></div>
+            </div>
+            <div class="adm-note" id="asNote">&mdash;</div>
+          </div>
+          <div class="section-title">DAILY DETAIL</div>
+          <div class="panel card">
+            <div class="rec-wrap">
+              <table class="rec-table">
+                <thead><tr><th>Date</th><th>Day</th><th>Status</th></tr></thead>
+                <tbody id="asRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANNOUNCEMENTS -->
+      <div class="view" id="view-announcements">
+        <h2 style="margin-bottom:4px;">Announcements</h2>
+        <p style="color:var(--muted); margin-bottom:18px;">Notices sent to parents, teachers and students.</p>
+        <div class="panel card ann-compose">
+          <div class="field">
+            <label for="annTitle">Headline</label>
+            <input id="annTitle" type="text" placeholder="e.g. Term 2 examinations begin on 12 October">
+          </div>
+          <div class="field">
+            <label for="annCat">Audience</label>
+            <select id="annCat">
+              <option value="School Announcement">School Announcement</option>
+              <option value="Academic">Academic</option>
+              <option value="Finance">Finance</option>
+              <option value="Sports">Sports</option>
+            </select>
+          </div>
+          <div class="save-row">
+            <button class="btn btn-primary" onclick="addAnnouncement()">Publish Notice</button>
+          </div>
+        </div>
+        <div class="section-title">PUBLISHED</div>
+        <div class="panel card"><div id="annList"></div></div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="view" id="view-messages">
+        <div id="msgListPane">
+          <h2 style="margin-bottom:4px;">Messages</h2>
+          <p style="color:var(--muted); margin-bottom:18px;">Conversations with parents and staff.</p>
+          <div class="panel card" id="msgListPanel"></div>
+        </div>
+        <div id="msgThreadPane" hidden>
+          <button type="button" class="back-btn" onclick="closeThread()">&#8592; Back to messages</button>
+          <div class="panel card">
+            <div class="thread-head" id="threadHead"></div>
+            <div class="thread-log" id="threadLog"></div>
+            <div class="thread-reply">
+              <input id="replyInput" type="text" placeholder="Write a reply&hellip;" aria-label="Write a reply" onkeydown="if(event.key==='Enter')sendReply()">
+              <button class="btn btn-primary" onclick="sendReply()">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="view" id="view-settings">
+        <h2 style="margin-bottom:4px;">Settings</h2>
+        <p style="color:var(--muted); margin-bottom:18px;">School-wide notification preferences and details.</p>
+
+        <div class="section-title">NOTIFICATIONS</div>
+        <div class="panel card">
+          <div class="switch-list" id="switchList"></div>
+        </div>
+
+        <div class="section-title">SCHOOL PROFILE</div>
+        <div class="panel card">
+          <div class="profile-list" id="profileList"></div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="bn-item active" data-view="dashboard" onclick="showView('dashboard')"><span class="bn-icon">⌂</span>Home</button>
+    <button class="bn-item" data-view="students" onclick="showView('students')"><span class="bn-icon">👥</span>Students</button>
+    <button class="bn-item" data-view="fees" onclick="showView('fees')"><span class="bn-icon">💰</span>Fees</button>
+    <button class="bn-item" data-more onclick="openMore()"><span class="bn-icon">⋯</span>More</button>
+  </nav>
+</div>
+
+<div class="sheet" id="moreSheet" role="dialog" aria-modal="true" aria-labelledby="moreTitle" aria-hidden="true">
+  <div class="sheet-backdrop" onclick="closeMore()"></div>
+  <div class="sheet-card">
+    <div class="sheet-grip"></div>
+    <div class="sheet-head">
+      <h3 id="moreTitle">More</h3>
+      <button class="modal-close" onclick="closeMore()" aria-label="Close menu">✕</button>
+    </div>
+    <div id="moreItems"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ---- Canonical data ------------------------------------------------
+     One roster, and every figure on the page is derived from it. Nothing
+     below writes a total into the markup, so a dashboard card and the
+     table it summarises can never disagree.
+
+     Daniel and Sarah carry over unchanged from the parent portal, so the
+     two agree about them. John, Grace and Brian are the rest of the
+     school's enrolment; their Mathematics marks match the teacher
+     portal's Form 2A register, and each one's five shown subjects
+     average exactly to the term average quoted beside them. */
+  const ROSTER = {
+    daniel: {
+      name:'Daniel Joseph', form:'Form 2A', id:'STU-000345', initials:'DJ',
+      guardian:'Mrs. Michael', classTeacher:'Mr. James Okello',
+      termAtt:94, average:78, subjectNote:'Showing 5 of 10 subjects',
+      attPresent:18, attAbsent:1, attLate:2,
+      subjects:[
+        {name:'Mathematics', mark:82}, {name:'Biology', mark:81},
+        {name:'English', mark:76},     {name:'Physics', mark:73},
+        {name:'Chemistry', mark:68}
+      ],
+      fees:{ year:'Academic Year 2026', total:1200000, paid:800000, due:400000, history:[
+        {date:'25 Sept 2026', label:'School Fees', amount:400000},
+        {date:'03 Aug 2026',  label:'School Fees', amount:400000}
+      ]}
+    },
+    sarah: {
+      name:'Sarah Michael', form:'Form 5B', id:'STU-000512', initials:'SM',
+      guardian:'Mrs. Michael', classTeacher:'Ms. Rehema Mushi',
+      termAtt:89, average:74, subjectNote:'Showing 5 of 10 subjects',
+      attPresent:16, attAbsent:2, attLate:2,
+      subjects:[
+        {name:'Biology', mark:81},     {name:'English', mark:76},
+        {name:'Mathematics', mark:72}, {name:'Civics', mark:71},
+        {name:'History', mark:68}
+      ],
+      fees:{ year:'Academic Year 2026', total:1500000, paid:1500000, due:0, history:[
+        {date:'20 Aug 2026', label:'School Fees', amount:750000},
+        {date:'15 Jul 2026', label:'School Fees', amount:750000}
+      ]}
+    },
+    john: {
+      name:'John Emmanuel', form:'Form 2A', id:'STU-000361', initials:'JE',
+      guardian:'Mr. Emmanuel', classTeacher:'Mr. James Okello',
+      termAtt:89, average:64, subjectNote:'Showing 5 of 10 subjects',
+      attPresent:17, attAbsent:2, attLate:1,
+      subjects:[
+        {name:'Mathematics', mark:68}, {name:'English', mark:61},
+        {name:'Science', mark:63},     {name:'Civics', mark:65},
+        {name:'History', mark:63}
+      ],
+      fees:{ year:'Academic Year 2026', total:1100000, paid:1100000, due:0, history:[
+        {date:'12 Sept 2026', label:'School Fees', amount:550000},
+        {date:'05 Aug 2026',  label:'School Fees', amount:550000}
+      ]}
+    },
+    grace: {
+      name:'Grace Peter', form:'Form 2A', id:'STU-000377', initials:'GP',
+      guardian:'Mrs. Peter', classTeacher:'Mr. James Okello',
+      termAtt:100, average:87, subjectNote:'Showing 5 of 10 subjects',
+      attPresent:20, attAbsent:0, attLate:1,
+      subjects:[
+        {name:'Mathematics', mark:91}, {name:'English', mark:88},
+        {name:'Science', mark:86},     {name:'Civics', mark:85},
+        {name:'History', mark:85}
+      ],
+      fees:{ year:'Academic Year 2026', total:1300000, paid:650000, due:650000, history:[
+        {date:'18 Aug 2026', label:'School Fees', amount:650000}
+      ]}
+    },
+    brian: {
+      name:'Brian Kimaro', form:'Form 2A', id:'STU-000398', initials:'BK',
+      guardian:'Mr. Kimaro', classTeacher:'Mr. James Okello',
+      termAtt:92, average:71, subjectNote:'Showing 5 of 10 subjects',
+      attPresent:18, attAbsent:1, attLate:2,
+      subjects:[
+        {name:'Mathematics', mark:74}, {name:'English', mark:71},
+        {name:'Science', mark:69},     {name:'Civics', mark:70},
+        {name:'History', mark:71}
+      ],
+      fees:{ year:'Academic Year 2026', total:1150000, paid:500000, due:650000, history:[
+        {date:'22 Aug 2026', label:'School Fees', amount:500000}
+      ]}
+    }
+  };
+
+  const STAFF = [
+    { name:'Mr. James Okello',    initials:'JO', role:'Mathematics Teacher', classes:'Form 2A', students:4 },
+    { name:'Ms. Rehema Mushi',   initials:'RM', role:'English Teacher',    classes:'Form 2A, Form 5B', students:5 },
+    { name:'Mr. Kelvin Ndosi',   initials:'KN', role:'Science Teacher',     classes:'Form 2A, Form 5B', students:5 },
+    { name:'Mrs. Anna Mwakalinga', initials:'AM', role:'Head Teacher',       classes:'Whole School', students:5 }
+  ];
+
+  const THREADS = {
+    'thread-1': {
+      from:"Daniel's Guardian", initials:'MG', time:'25m',
+      topic:'Fee instalment plan',
+      preview:'Could you confirm the instalment plan for the second term?',
+      body:[
+        {them:true, text:'Good morning. Could you confirm the instalment plan for the second term? We would like to settle the balance before the end of October.', time:'08:41'},
+        {them:true, text:'We have already paid TZS 800,000 this year. Please advise whether the remainder can be split into two payments.', time:'08:42'}
+      ]
+    },
+    'thread-2': {
+      from:'Mr. James Okello', initials:'JO', time:'2h',
+      topic:'Form 2A marks ready',
+      preview:'The Mathematics marks for Form 2A are entered and verified.',
+      body:[
+        {them:true, text:'The Mathematics marks for Form 2A are entered and verified. Grace leads the class at 91 and John is at 68, so a catch-up session may help him before the mock exam.', time:'07:15'},
+        {them:true, text:'I have kept the class average in the Marks Entry view derived from the table, so it updates as soon as anyone changes a mark.', time:'07:16'}
+      ]
+    },
+    'thread-3': {
+      from:"Grace's Guardian", initials:'PG', time:'1d',
+      topic:'Attendance this term',
+      preview:'Grace has been absent twice this term — is something wrong?',
+      body:[
+        {them:true, text:'Grace has been absent twice this term, is something wrong at home or at school? Her register shows she was on time every day in September.', time:'Yesterday'}
+      ]
+    }
+  };
+  const REPLIES = { 'thread-1': [], 'thread-2': [], 'thread-3': [] };
+
+  const ANNOUNCEMENTS = [
+    { cat:'School Announcement', dot:'blue',   title:'Annual Sports Day',        date:'25 Sept 2026' },
+    { cat:'Academic',            dot:'green',  title:'Mathematics results published', date:'24 Sept 2026' },
+    { cat:'Finance',             dot:'orange', title:'Fee balance reminder',    date:'22 Sept 2026' }
+  ];
+
+  const NOTIFY_LABELS = {
+    attendance:{ t:'Attendance alerts',    s:'Notify when a class register is not submitted' },
+    fees:      { t:'Fee reminders',        s:'Outstanding balances and due dates' },
+    results:   { t:'Results published',    s:'When a mark or grade is released' },
+    messages:  { t:'Parent messages',      s:'Replies to anything you send' }
+  };
+  const NOTIFY = {
+    attendance:true, fees:true, results:true, messages:false
+  };
+
+  /* The three tabs that live directly on the mobile bottom nav. Anything
+     else is reached through More, so More is the tab that highlights. */
+  const PRIMARY_VIEWS = ['dashboard','students','fees'];
+
+  /* Views that take a student id as a second route segment. */
+  const SCOPED_VIEWS = ['students','fees','attendance'];
+
+  const MORE_ITEMS = [
+    { view:'teachers',      ico:'🎓', title:'Teachers',      sub:'Staff list and class allocation' },
+    { view:'classes',       ico:'▣',  title:'Classes',       sub:'Enrolment and performance' },
+    { view:'attendance',    ico:'✓',  title:'Attendance',    sub:'Term figures and September register' },
+    { view:'announcements', ico:'📢', title:'Announcements', sub:'Publish and review notices' },
+    { view:'messages',      ico:'💬', title:'Messages',      sub:'Conversations with parents' },
+    { view:'settings',      ico:'⚙',  title:'Settings',      sub:'Notifications and school profile' }
+  ];
+
+  let moreTrigger = null;
+  let openThreadId = '';
+  let studentTab = 'overview';
+
+  /* ---- Helpers ---- */
+  function setText(id, val){ const el=document.getElementById(id); if(el) el.textContent=val; }
+  function tzs(n){ return 'TZS ' + n.toLocaleString('en-US'); }
+  function gradeFor(mark){
+    if(mark>=90) return 'A+';
+    if(mark>=80) return 'A';
+    if(mark>=75) return 'B+';
+    if(mark>=65) return 'B';
+    if(mark>=50) return 'C';
+    return 'F';
+  }
+  function paidPct(c){ return c.fees.total ? Math.round(c.fees.paid / c.fees.total * 100) : 0; }
+  function rosterKeys(){ return Object.keys(ROSTER); }
+  function mean(list){
+    const n = list.filter(function(v){ return Number.isFinite(v); });
+    return n.length ? n.reduce(function(a,b){ return a+b; }, 0) / n.length : 0;
+  }
+  /* School days in September 2026, matching the parent portal's register
+     so the two never disagree about which days were school days. */
+  const SCHOOL_DAYS = (function(){
+    const dows = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const rows = [];
+    for(let d=1; d<=30; d++){
+      const dow = new Date(2026, 8, d).getDay();
+      if(dow === 0 || dow === 6) continue;
+      rows.push({ day:d, dow:dows[dow] });
+    }
+    return rows;
+  })();
+  /* Builds the per-school-day status string from the summary counts, so
+     the register is always generated from the same numbers it displays. */
+  function statusPattern(present, late, absent){
+    return 'p'.repeat(present) + 'l'.repeat(late) + 'a'.repeat(absent);
+  }
+  function recordRows(c){
+    const statuses = statusPattern(c.attPresent, c.attLate, c.attAbsent);
+    return SCHOOL_DAYS.map(function(r, i){
+      return { day:r.day, dow:r.dow, st:(i < statuses.length ? statuses[i] : '') };
+    });
+  }
+  function septemberPct(c){ return Math.round(c.attPresent / SCHOOL_DAYS.length * 100); }
+  function feeTotals(){
+    const keys = rosterKeys();
+    const t = { total:0, paid:0, due:0 };
+    keys.forEach(function(k){
+      t.total += ROSTER[k].fees.total;
+      t.paid  += ROSTER[k].fees.paid;
+      t.due   += ROSTER[k].fees.due;
+    });
+    return t;
+  }
+  function collectionPct(){ const t = feeTotals(); return t.total ? Math.round(t.paid / t.total * 100) : 0; }
+  function classList(){
+    const seen = [];
+    rosterKeys().forEach(function(k){
+      const f = ROSTER[k].form;
+      if(seen.indexOf(f) === -1) seen.push(f);
+    });
+    return seen;
+  }
+  function inClass(form){
+    return rosterKeys().filter(function(k){ return ROSTER[k].form === form; });
+  }
+
+  /* ---- Dashboard ---- */
+  function renderDashboard(){
+    const keys = rosterKeys();
+    setText('kEnrol', String(keys.length));
+    setText('kEnrolSub', classList().length + ' classes');
+    setText('kStaff', String(STAFF.length));
+    setText('kStaffSub', 'Including 1 administrator');
+    setText('kAtt', Math.round(mean(keys.map(function(k){ return ROSTER[k].termAtt; }))) + '%');
+
+    const t = feeTotals();
+    const pct = collectionPct();
+    setText('kFees', pct + '%');
+    setText('kFeesSub', tzs(t.due) + ' outstanding');
+    setText('kTotal', tzs(t.total));
+    setText('kPaid', tzs(t.paid));
+    setText('kDue', tzs(t.due));
+    document.getElementById('kMeter').style.width = pct + '%';
+    setText('kCapL', tzs(t.paid) + ' collected');
+    setText('kCapR', pct + '% of ' + tzs(t.total));
+
+    const SESSIONS = [
+      { time:'08:00', subject:'Mathematics', form:'Form 2A', room:'Room 12' },
+      { time:'10:00', subject:'English',    form:'Form 5B', room:'Room 9' },
+      { time:'14:00', subject:'Science',    form:'Form 2A', room:'Lab 2' }
+    ];
+    document.getElementById('dashClasses').innerHTML = SESSIONS.map(function(s){
+      return '<div class="class-row">' +
+               '<span class="class-time">' + s.time + '</span>' +
+               '<div class="class-info" style="flex:1;"><strong>' + s.subject + '</strong><span>' + s.form + ' · ' + s.room + '</span></div>' +
+               '<button class="btn btn-outline" onclick="showView(\'attendance\')">Register</button>' +
+             '</div>';
+    }).join('');
+  }
+
+  /* ---- Students ---- */
+  function renderStudents(){
+    const grid = document.getElementById('stuGrid');
+    const search = document.getElementById('stuSearch');
+    if(search) search.value = '';
+    grid.innerHTML = rosterKeys().map(function(k){
+      const c = ROSTER[k];
+      return '<button type="button" class="child-card" data-name="' + (c.name + ' ' + c.form + ' ' + c.id).toLowerCase() + '"' +
+               ' onclick="openStudent(\'' + k + '\')">' +
+               '<span class="avatar-lg">' + c.initials + '</span>' +
+               '<span class="cc-body">' +
+                 '<span class="cc-name">' + c.name + '</span>' +
+                 '<span class="cc-form">' + c.form + ' · ' + c.id + '</span>' +
+                 '<span class="cc-action">Open record →</span>' +
+               '</span>' +
+             '</button>';
+    }).join('');
+    setText('stuCount', studentsSummary());
+  }
+  function studentsSummary(){
+    return rosterKeys().length + ' enrolled students across ' + classList().length + ' classes.';
+  }
+  function filterList(containerId, query){
+    const q = query.trim().toLowerCase();
+    document.querySelectorAll('#' + containerId + ' .child-card').forEach(function(card){
+      card.style.display = card.dataset.name.indexOf(q) === -1 ? 'none' : '';
+    });
+  }
+  function filterTable(tableId, query){
+    const q = query.trim().toLowerCase();
+    document.querySelectorAll('#' + tableId + ' tbody tr').forEach(function(r){
+      r.style.display = (r.dataset.name || '').indexOf(q) === -1 ? 'none' : '';
+    });
+  }
+  function openStudent(key){
+    if(!ROSTER[key]) return;
+    studentTab = 'overview';
+    writeRoute('students', key);
+    paintView('students');
+    renderView('students', key);
+  }
+  function closeStudent(){
+    writeRoute('students', '');
+    paintView('students');
+    renderView('students', '');
+    const first = document.querySelector('#stuGrid .child-card');
+    if(first) first.focus();
+  }
+  function studentHead(c){
+    return '<div class="child-head">' +
+             '<div class="avatar-lg">' + c.initials + '</div>' +
+             '<div class="ch-meta">' +
+               '<h2>' + c.name + '</h2>' +
+               '<p>' + c.form + ' · Student ID: ' + c.id + ' · Guardian: ' + c.guardian + '</p>' +
+             '</div>' +
+           '</div>' +
+           '<div class="kpi-grid" style="margin-top:16px;">' +
+             '<div class="kpi-card card"><span class="label">Term Attendance</span><strong>' + c.termAtt + '%</strong></div>' +
+             '<div class="kpi-card card"><span class="label">Term Average</span><strong>' + c.average + '%</strong></div>' +
+             '<div class="kpi-card card"><span class="label">September</span><strong>' + septemberPct(c) + '%</strong></div>' +
+             '<div class="kpi-card card"><span class="label">Fees Paid</span><strong>' + paidPct(c) + '%</strong><span class="sub">' + (c.fees.due > 0 ? tzs(c.fees.due) + ' due' : 'Fully paid') + '</span></div>' +
+           '</div>';
+  }
+  function renderStudentDetail(key){
+    const c = ROSTER[key];
+    document.getElementById('stuHead').innerHTML = studentHead(c);
+    document.querySelectorAll('#view-students .tab-btn').forEach(function(t){
+      t.classList.toggle('active', t.dataset.tab === studentTab);
+    });
+
+    const body = document.getElementById('stuBody');
+    if(studentTab === 'results'){
+      const shown = mean(c.subjects.map(function(s){ return s.mark; }));
+      body.innerHTML = '<div class="adm-note">' + c.subjectNote + ' · the five shown average ' + shown.toFixed(1) + '%, while the term average of ' + c.average + '% covers all subjects.</div>' +
+        c.subjects.map(function(s){
+          return '<div class="perf-row">' +
+                   '<span class="perf-name">' + s.name + '</span>' +
+                   '<span class="perf-bar"><span class="perf-fill" style="display:block;width:' + s.mark + '%"></span></span>' +
+                   '<span class="perf-val">' + s.mark + '%</span>' +
+                   '<span class="grade-pill">' + gradeFor(s.mark) + '</span>' +
+                 '</div>';
+        }).join('');
+      return;
+    }
+    if(studentTab === 'fees'){
+      const pct = paidPct(c);
+      body.innerHTML = '<div class="fee-grid">' +
+          '<div class="fee-tile"><span>Total Required</span><b>' + tzs(c.fees.total) + '</b></div>' +
+          '<div class="fee-tile"><span>Paid</span><b>' + tzs(c.fees.paid) + '</b></div>' +
+          '<div class="fee-tile due"><span>Outstanding</span><b>' + tzs(c.fees.due) + '</b></div>' +
+        '</div>' +
+        '<div class="meter"><div class="meter-fill" style="width:' + pct + '%"></div></div>' +
+        '<div class="meter-cap"><span>' + tzs(c.fees.paid) + ' paid</span><span>' + pct + '% Paid</span></div>' +
+        '<div class="section-title">PAYMENT HISTORY</div>' +
+        c.fees.history.map(function(h){
+          return '<div class="pay-row">' +
+                   '<span class="pay-date">' + h.date + '</span>' +
+                   '<span class="pay-label">' + h.label + '</span>' +
+                   '<span class="pay-amt">' + tzs(h.amount) + '</span>' +
+                   '<span class="grade-pill">✓ Paid</span>' +
+                 '</div>';
+        }).join('');
+      return;
+    }
+    if(studentTab === 'attendance'){
+      const rows = recordRows(c);
+      body.innerHTML = '<div class="attendance-summary" style="border-top:0;padding-top:0;margin-top:0;">' +
+          '<div><strong>' + c.attPresent + '</strong><span>Present</span></div>' +
+          '<div><strong>' + c.attAbsent + '</strong><span>Absent</span></div>' +
+          '<div><strong>' + c.attLate + '</strong><span>Late</span></div>' +
+        '</div>' +
+        '<div class="adm-note">September 2026 register: ' + septemberPct(c) + '% present across ' + SCHOOL_DAYS.length + ' school days. Term to date is ' + c.termAtt + '%.</div>' +
+        '<div class="section-title">DAILY DETAIL</div>' +
+        '<div class="rec-wrap"><table class="rec-table"><thead><tr><th>Date</th><th>Day</th><th>Status</th></tr></thead><tbody>' +
+        rows.map(function(r){
+          const label = r.st === 'p' ? 'Present' : r.st === 'a' ? 'Absent' : r.st === 'l' ? 'Late' : 'Not marked';
+          return '<tr><td class="rec-day">' + (r.day < 10 ? '0' : '') + r.day + ' Sep</td>' +
+                 '<td class="rec-dow">' + r.dow + '</td>' +
+                 '<td><span class="tag ' + (r.st || 'x') + '">' + label + '</span></td></tr>';
+        }).join('') + '</tbody></table></div>';
+      return;
+    }
+    /* overview */
+    body.innerHTML = '<div class="profile-list">' +
+        [ ['Class', c.form],
+          ['Student ID', c.id],
+          ['Form Teacher', c.classTeacher],
+          ['Guardian', c.guardian],
+          ['Subjects shown', c.subjectNote]
+        ].map(function(r){
+          return '<div class="prof-row"><span>' + r[0] + '</span><b>' + r[1] + '</b></div>';
+        }).join('') +
+      '</div>' +
+      '<div class="save-row">' +
+        '<button class="btn btn-outline" onclick="scopeTo(\'fees\',\'' + key + '\')">Open fees</button>' +
+        '<button class="btn btn-outline" onclick="scopeTo(\'attendance\',\'' + key + '\')">Open register</button>' +
+      '</div>';
+  }
+  function setTab(btn, tab){
+    studentTab = tab;
+    const key = parseRoute().scope;
+    document.querySelectorAll('#view-students .tab-btn').forEach(function(t){
+      t.classList.toggle('active', t.dataset.tab === tab);
+    });
+    if(ROSTER[key]) renderStudentDetail(key);
+  }
+
+  /* ---- Teachers ---- */
+  function renderTeachers(){
+    document.getElementById('staffGrid').innerHTML = STAFF.map(function(s){
+      return '<div class="staff-card">' +
+               '<div class="staff-top">' +
+                 '<span class="avatar-lg">' + s.initials + '</span>' +
+                 '<div><span class="staff-name">' + s.name + '</span><span class="staff-role">' + s.role + '</span></div>' +
+               '</div>' +
+               '<div class="staff-load"><span>Teaching</span><b>' + s.classes + '</b></div>' +
+               '<div class="staff-load"><span>Students</span><b>' + s.students + '</b></div>' +
+             '</div>';
+    }).join('');
+    const teaching = STAFF.filter(function(s){ return s.role !== 'Head Teacher'; });
+    document.getElementById('staffSummary').innerHTML = [
+      ['Total staff', String(STAFF.length)],
+      ['Classroom teachers', String(teaching.length)],
+      ['Administration', String(STAFF.length - teaching.length)],
+      ['Students enrolled', String(rosterKeys().length)],
+      ['Students per teacher', (mean(teaching.map(function(s){ return s.students; }))).toFixed(1)]
+    ].map(function(r){
+      return '<div class="prof-row"><span>' + r[0] + '</span><b>' + r[1] + '</b></div>';
+    }).join('');
+  }
+
+  /* ---- Classes ---- */
+  function renderClasses(){
+    document.getElementById('classGrid').innerHTML = classList().map(function(form){
+      const keys = inClass(form);
+      const att = mean(keys.map(function(k){ return ROSTER[k].termAtt; }));
+      const avg = mean(keys.map(function(k){ return ROSTER[k].average; }));
+      return '<div class="class-tile">' +
+               '<div class="class-tile-top"><h3>' + form + '</h3><span class="pill">' + keys.length + ' students</span></div>' +
+               '<div class="class-stats">' +
+                 '<div><strong>' + keys.length + '</strong><span>Students</span></div>' +
+                 '<div><strong>' + Math.round(att) + '%</strong><span>Term Att.</span></div>' +
+                 '<div><strong>' + Math.round(avg) + '%</strong><span>Average</span></div>' +
+               '</div>' +
+             '</div>';
+    }).join('');
+    document.getElementById('classRows').innerHTML = classList().map(function(form){
+      const keys = inClass(form);
+      const att = mean(keys.map(function(k){ return ROSTER[k].termAtt; }));
+      const avg = mean(keys.map(function(k){ return ROSTER[k].average; }));
+      const teacher = ROSTER[keys[0]].classTeacher;
+      return '<tr data-name="' + form.toLowerCase() + '"><td style="font-weight:600;color:var(--navy);">' + form + '</td>' +
+             '<td>' + keys.length + '</td><td>' + teacher + '</td>' +
+             '<td>' + Math.round(att) + '%</td><td>' + Math.round(avg) + '%</td></tr>';
+    }).join('');
+  }
+
+  /* ---- Fees ---- */
+  function renderFees(scope){
+    const school = document.getElementById('feeSchoolPane');
+    const one = document.getElementById('feeStudentPane');
+    const scoped = !!scope && !!ROSTER[scope];
+    school.hidden = scoped;
+    one.hidden = !scoped;
+    if(!scoped){ renderFeesSchool(); return; }
+    const c = ROSTER[scope];
+    const pct = paidPct(c);
+    setText('feeWho', c.name);
+    setText('feeSubWho', c.form + ' · ' + c.fees.year);
+    setText('fsTotal', tzs(c.fees.total));
+    setText('fsPaid', tzs(c.fees.paid));
+    setText('fsDue', tzs(c.fees.due));
+    document.getElementById('fsMeter').style.width = pct + '%';
+    setText('fsCapL', tzs(c.fees.paid) + ' paid');
+    setText('fsCapR', pct + '% Paid');
+    document.getElementById('fsHistory').innerHTML = c.fees.history.map(function(h){
+      return '<div class="pay-row">' +
+               '<span class="pay-date">' + h.date + '</span>' +
+               '<span class="pay-label">' + h.label + '</span>' +
+               '<span class="pay-amt">' + tzs(h.amount) + '</span>' +
+               '<span class="grade-pill">✓ Paid</span>' +
+             '</div>';
+    }).join('');
+    const cta = document.getElementById('fsCta');
+    if(c.fees.due > 0){
+      cta.innerHTML = '<button class="btn btn-primary" onclick="sendReminder(\'' + scope + '\')">Send Fee Reminder</button>';
+    } else {
+      cta.innerHTML = '<span class="grade-pill" style="font-size:.82rem;padding:8px 16px;">✓ Fees fully paid for ' + c.fees.year + '</span>';
+    }
+  }
+  function renderFeesSchool(){
+    const t = feeTotals();
+    const pct = collectionPct();
+    setText('fTotal', tzs(t.total));
+    setText('fPaid', tzs(t.paid));
+    setText('fDue', tzs(t.due));
+    document.getElementById('fMeter').style.width = pct + '%';
+    setText('fCapL', tzs(t.paid) + ' collected');
+    setText('fCapR', pct + '% collected');
+    document.getElementById('feeRows').innerHTML = rosterKeys().map(function(k){
+      const c = ROSTER[k];
+      return '<tr data-name="' + c.name.toLowerCase() + '">' +
+               '<td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">' + c.initials + '</div><strong>' + c.name + '</strong></td>' +
+               '<td>' + c.form + '</td>' +
+               '<td>' + tzs(c.fees.total) + '</td>' +
+               '<td>' + tzs(c.fees.paid) + '</td>' +
+               '<td style="font-weight:700;color:' + (c.fees.due > 0 ? 'var(--amber)' : 'var(--green)') + ';">' + tzs(c.fees.due) + '</td>' +
+               '<td><span class="tag ' + (c.fees.due > 0 ? 'a' : 'p') + '">' + (c.fees.due > 0 ? 'Outstanding' : 'Paid') + '</span></td>' +
+             '</tr>';
+    }).join('');
+    /* Totals are summed from the same roster the rows were built from. */
+    document.getElementById('feeTotalRow').innerHTML =
+      '<div class="total-cell">Total · ' + rosterKeys().length + ' students</div>' +
+      '<div class="total-cell">' + tzs(t.total) + '</div>' +
+      '<div class="total-cell">' + tzs(t.paid) + '</div>' +
+      '<div class="total-cell due">' + tzs(t.due) + '</div>' +
+      '<div class="total-cell">' + pct + '% collected</div>';
+  }
+  function sendReminder(key){
+    const c = ROSTER[key];
+    if(!c || c.fees.due <= 0) return;
+    showToast('Fee reminder sent to ' + c.guardian + ' for ' + c.name + ' (' + tzs(c.fees.due) + ').');
+  }
+
+  /* ---- Attendance ---- */
+  function renderAttendance(scope){
+    const school = document.getElementById('attSchoolPane');
+    const one = document.getElementById('attStudentPane');
+    const scoped = !!scope && !!ROSTER[scope];
+    school.hidden = scoped;
+    one.hidden = !scoped;
+    if(!scoped){ renderAttendanceSchool(); return; }
+    const c = ROSTER[scope];
+    setText('attWho', c.name);
+    setText('attSubWho', c.form + ' · September 2026 register');
+    setText('asPresent', c.attPresent);
+    setText('asAbsent', c.attAbsent);
+    setText('asLate', c.attLate);
+    setText('asNote', 'September 2026: ' + septemberPct(c) + '% present across ' + SCHOOL_DAYS.length + ' school days. Term to date is ' + c.termAtt + '%.');
+    document.getElementById('asRows').innerHTML = recordRows(c).map(function(r){
+      const label = r.st === 'p' ? 'Present' : r.st === 'a' ? 'Absent' : r.st === 'l' ? 'Late' : 'Not marked';
+      return '<tr><td class="rec-day">' + (r.day < 10 ? '0' : '') + r.day + ' Sep</td>' +
+             '<td class="rec-dow">' + r.dow + '</td>' +
+             '<td><span class="tag ' + (r.st || 'x') + '">' + label + '</span></td></tr>';
+    }).join('');
+  }
+  function renderAttendanceSchool(){
+    const keys = rosterKeys();
+    setText('aStudents', String(keys.length));
+    setText('aMean', Math.round(mean(keys.map(function(k){ return ROSTER[k].termAtt; }))) + '%');
+    setText('aBelow', String(keys.filter(function(k){ return ROSTER[k].termAtt < 90; }).length));
+    let p = 0, a = 0, l = 0;
+    keys.forEach(function(k){ p += ROSTER[k].attPresent; a += ROSTER[k].attAbsent; l += ROSTER[k].attLate; });
+    setText('aPresent', String(p));
+    setText('aAbsent', String(a));
+    setText('aLate', String(l));
+    document.getElementById('attRows').innerHTML = keys.map(function(k){
+      const c = ROSTER[k];
+      return '<tr data-name="' + c.name.toLowerCase() + '">' +
+               '<td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">' + c.initials + '</div><strong>' + c.name + '</strong></td>' +
+               '<td>' + c.form + '</td>' +
+               '<td>' + c.termAtt + '%</td>' +
+               '<td>' + septemberPct(c) + '%</td>' +
+               '<td><button class="btn btn-outline btn-sm" onclick="openStudent(\'' + k + '\')">Open</button></td>' +
+             '</tr>';
+    }).join('');
+  }
+
+  /* ---- Announcements ---- */
+  function renderAnnouncements(){
+    document.getElementById('annList').innerHTML = ANNOUNCEMENTS.map(function(a){
+      return '<div class="ann-item">' +
+               '<span class="ann-dot ' + a.dot + '"></span>' +
+               '<div>' +
+                 '<div class="ann-cat">' + a.cat + '</div>' +
+                 '<strong>' + a.title + '</strong>' +
+                 '<div class="ann-date">' + a.date + '</div>' +
+               '</div>' +
+             '</div>';
+    }).join('');
+  }
+  function addAnnouncement(){
+    const titleEl = document.getElementById('annTitle');
+    const catEl = document.getElementById('annCat');
+    const title = titleEl.value.trim();
+    if(!title){
+      showToast('Give the notice a headline first.');
+      titleEl.focus();
+      return;
+    }
+    const DOTS = { 'School Announcement':'blue', 'Academic':'green', 'Finance':'orange', 'Sports':'green' };
+    ANNOUNCEMENTS.unshift({ cat:catEl.value, dot:DOTS[catEl.value] || 'blue', title:title, date:'25 Sept 2026' });
+    titleEl.value = '';
+    renderAnnouncements();
+    showToast('Published "' + title + '" to ' + catEl.value.toLowerCase() + '.');
+  }
+
+  /* ---- Messages ---- */
+  function renderMessages(sub){
+    const open = !!sub && Object.prototype.hasOwnProperty.call(THREADS, sub);
+    document.getElementById('msgListPane').hidden = open;
+    document.getElementById('msgThreadPane').hidden = !open;
+    if(!open){
+      openThreadId = '';
+      document.getElementById('msgListPanel').innerHTML = Object.keys(THREADS).map(function(id){
+        const t = THREADS[id];
+        return '<button type="button" class="msg-item" onclick="openThread(\'' + id + '\')">' +
+                 '<span class="avatar">' + t.initials + '</span>' +
+                 '<span class="msg-body">' +
+                   '<span class="msg-from">' + t.from + '</span>' +
+                   '<span class="msg-text">' + t.preview + '</span>' +
+                 '</span>' +
+                 '<span class="msg-time">' + t.time + '</span>' +
+               '</button>';
+      }).join('');
+      setText('unreadBadge', String(Object.keys(THREADS).filter(function(id){ return !REPLIES[id].length; }).length || 0));
+      return;
+    }
+    openThreadId = sub;
+    const t = THREADS[sub];
+    document.getElementById('threadHead').innerHTML =
+      '<span class="avatar">' + t.initials + '</span>' +
+      '<span class="msg-body"><strong>' + t.from + '</strong><span>' + t.topic + '</span></span>';
+    document.getElementById('replyInput').value = '';
+    renderThread();
+  }
+  function renderThread(){
+    if(!openThreadId) return;
+    const all = THREADS[openThreadId].body.concat(REPLIES[openThreadId]);
+    document.getElementById('threadLog').innerHTML = all.map(function(m){
+      return '<div class="bubble ' + (m.them ? 'them' : 'me') + '">' + m.text +
+             '<time>' + m.time + '</time></div>';
+    }).join('');
+  }
+  function openThread(id){
+    writeRoute('messages', '');
+    paintView('messages');
+    renderMessages(id);
+    const log = document.getElementById('threadLog');
+    log.scrollTop = log.scrollHeight;
+  }
+  function closeThread(){
+    writeRoute('messages', '');
+    paintView('messages');
+    renderMessages('');
+    const first = document.querySelector('#msgListPanel .msg-item');
+    if(first) first.focus();
+  }
+  function sendReply(){
+    const input = document.getElementById('replyInput');
+    const text = input.value.trim();
+    if(!openThreadId) return;
+    if(!text){ showToast('Type a reply first.'); input.focus(); return; }
+    REPLIES[openThreadId].push({ them:false, text:text, time:'Just now' });
+    input.value = '';
+    renderThread();
+    setText('unreadBadge', '0');
+    const log = document.getElementById('threadLog');
+    log.scrollTop = log.scrollHeight;
+  }
+
+  /* ---- Settings ---- */
+  function renderSettings(){
+    document.getElementById('switchList').innerHTML = Object.keys(NOTIFY_LABELS).map(function(key){
+      const lab = NOTIFY_LABELS[key];
+      const on = NOTIFY[key];
+      const lid = 'sw-' + key;
+      return '<div class="switch-row">' +
+               '<span class="switch-txt" id="' + lid + '"><b>' + lab.t + '</b><span>' + lab.s + '</span></span>' +
+               '<button type="button" class="switch" role="switch" aria-checked="' + on + '"' +
+                 ' aria-labelledby="' + lid + '" onclick="toggleNotify(\'' + key + '\',this)"></button>' +
+             '</div>';
+    }).join('');
+    const t = feeTotals();
+    document.getElementById('profileList').innerHTML = [
+      ['School', 'Mwanza International Academy'],
+      ['Administrator', 'Ms. Fatuma Juma'],
+      ['Academic Year', '2026'],
+      ['Current Term', 'Term 2'],
+      ['Enrolled students', String(rosterKeys().length)],
+      ['Classes', classList().join(', ')],
+      ['Teaching staff', String(STAFF.length)],
+      ['Fees required', tzs(t.total)]
+    ].map(function(r){
+      return '<div class="prof-row"><span>' + r[0] + '</span><b>' + r[1] + '</b></div>';
+    }).join('');
+  }
+  /* Updates the control in place rather than re-rendering the list, so the
+     switch that was just pressed keeps keyboard focus. */
+  function toggleNotify(key, btn){
+    const next = !NOTIFY[key];
+    NOTIFY[key] = next;
+    btn.setAttribute('aria-checked', String(next));
+    showToast(NOTIFY_LABELS[key].t + (next ? ' on' : ' off') + '.');
+  }
+
+  /* ---- More sheet ---- */
+  function renderMore(){
+    document.getElementById('moreItems').innerHTML = MORE_ITEMS.map(function(it){
+      return '<button type="button" class="sheet-item" onclick="pickMore(\'' + it.view + '\')">' +
+               '<span class="sheet-ico">' + it.ico + '</span>' +
+               '<span class="sheet-item-txt"><b>' + it.title + '</b><span>' + it.sub + '</span></span>' +
+             '</button>';
+    }).join('');
+  }
+  function openMore(){
+    const s = document.getElementById('moreSheet');
+    if(s.classList.contains('open')) return;
+    moreTrigger = document.querySelector('.bn-item[data-more]');
+    s.classList.add('open');
+    s.setAttribute('aria-hidden','false');
+    const first = s.querySelector('.sheet-item');
+    if(first) first.focus();
+  }
+  function closeMore(){
+    const s = document.getElementById('moreSheet');
+    if(!s.classList.contains('open')) return;
+    s.classList.remove('open');
+    s.setAttribute('aria-hidden','true');
+    if(moreTrigger){ moreTrigger.focus(); moreTrigger = null; }
+  }
+  function pickMore(view){
+    closeMore();
+    showView(view);
+  }
+
+  /* ---- Routing -------------------------------------------------------
+     The URL is the single source of truth. A route is one or two segments:
+
+         #dashboard          a school-wide view
+         #students/daniel    one student's record
+         #fees/sarah         fees scoped to one student
+         #attendance/john    one student's register
+
+     Only students, fees and attendance take a second segment, and it has
+     to name a real student. Anything else is dropped, so a stale or
+     hand-edited link lands on the school-wide view rather than an empty
+     pane. showView, openStudent and openThread only *write* the hash;
+     applyRoute is the only thing that *reads* it and paints the DOM.
+     Because writeRoute skips the write when the hash already matches, one
+     click fires at most one hashchange and cannot loop.
+
+     location.hash is used in preference to history.pushState because
+     pushState can throw a SecurityError on file:// in some browsers,
+     and this prototype is opened straight from disk. */
+  function viewIds(){
+    return Array.prototype.map.call(document.querySelectorAll('.view'), function(v){
+      return v.id.replace(/^view-/, '');
+    });
+  }
+  function parseRoute(){
+    const parts = (location.hash || '').replace(/^#\/?/, '').split('/').filter(Boolean);
+    let view = parts[0] || 'dashboard';
+    if(viewIds().indexOf(view) === -1) view = 'dashboard';
+    let scope = '';
+    if(SCOPED_VIEWS.indexOf(view) !== -1 && parts[1]){
+      if(Object.prototype.hasOwnProperty.call(ROSTER, parts[1])) scope = parts[1];
+    }
+    return { view:view, scope:scope };
+  }
+  function writeRoute(view, scope){
+    let want = '#' + view;
+    if(scope) want += '/' + scope;
+    if(location.hash !== want) location.hash = want;
+  }
+  function paintView(id){
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    const el = document.getElementById('view-' + id);
+    if(el) el.classList.add('active');
+    setActiveNav(id);
+    closeSide();
+  }
+  function renderView(view, scope){
+    if(view === 'dashboard') renderDashboard();
+    else if(view === 'students'){ scope ? renderStudentDetail(scope) : renderStudents(); }
+    else if(view === 'teachers') renderTeachers();
+    else if(view === 'classes') renderClasses();
+    else if(view === 'fees') renderFees(scope);
+    else if(view === 'attendance') renderAttendance(scope);
+    else if(view === 'announcements') renderAnnouncements();
+    else if(view === 'messages') renderMessages(scope);
+    else if(view === 'settings') renderSettings();
+  }
+  function applyRoute(){
+    const r = parseRoute();
+    /* Close any open overlay: its contents belong to the view and student
+       that were selected when it was opened. */
+    closeMore();
+    paintView(r.view);
+    renderView(r.view, r.scope);
+  }
+  function showView(id){
+    /* Navigating via the nav always means "back to the top level of that
+       view", so any scoped pane is intentionally dropped here. */
+          writeRoute(id, '');
+          paintView(id);
+          renderView(id, '');
+        }
+        /* ---- Signing out ----
+           There is no authentication in this build, so "log out" means
+           exactly one thing: leave the portal. The public site is where the
+           links back into all four portals live. */
+        function logout(){
+          location.href = 'index.html';
+        }
+        function scopeTo(view, key){
+    writeRoute(view, key);
+    paintView(view);
+    renderView(view, key);
+  }
+  function unscope(view){
+    writeRoute(view, '');
+    paintView(view);
+    renderView(view, '');
+  }
+  function setActiveNav(id){
+    document.querySelectorAll('.nav-item[data-view]').forEach(function(n){
+      const on = n.dataset.view===id;
+      n.classList.toggle('active', on);
+      /* The active item is the current page, not just a styled one. */
+      if(on){ n.setAttribute('aria-current','page'); } else { n.removeAttribute('aria-current'); }
+    });
+    document.querySelectorAll('.bn-item[data-view]').forEach(function(n){
+      const on = n.dataset.view===id;
+      n.classList.toggle('active', on);
+      if(on){ n.setAttribute('aria-current','page'); } else { n.removeAttribute('aria-current'); }
+    });
+    /* More is the catch-all tab, so it takes the highlight whenever the
+       current view is not one of the three primary tabs - otherwise those
+       screens would have no highlighted tab at all on mobile. It gets no
+       aria-current because it opens a menu rather than being a page. */
+    const more = PRIMARY_VIEWS.indexOf(id) === -1;
+    document.querySelectorAll('.bn-item[data-more]').forEach(function(n){
+      n.classList.toggle('active', more);
+      n.removeAttribute('aria-current');
+    });
+  }
+
+  /* The sidebar is a visible column above 980px but an off-canvas drawer
+     at or below it, so its ARIA state depends on the viewport as well as
+     on whether the drawer is open. Deriving it in one place stops the
+     two states drifting apart, and inert takes the off-canvas links out
+     of the tab order so aria-hidden never wraps focusable content. */
+  const WIDE = window.matchMedia('(min-width: 981px)');
+  function syncSideAria(){
+    const sb = document.querySelector('.sidebar');
+    const shell = document.getElementById('appShell');
+    const visible = WIDE.matches || shell.classList.contains('menu-open');
+    sb.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    sb.toggleAttribute('inert', !visible);
+  }
+  if(WIDE.addEventListener){ WIDE.addEventListener('change', syncSideAria); }
+  else if(WIDE.addListener){ WIDE.addListener(syncSideAria); }
+
+  function openSide(){
+    document.getElementById('appShell').classList.add('menu-open');
+    syncSideAria();
+  }
+  function closeSide(){
+    document.getElementById('appShell').classList.remove('menu-open');
+    syncSideAria();
+  }
+
+  /* Keep Tab inside an open overlay. Without this, focus walks straight
+     out of the dialog into the page behind it, which aria-modal alone
+     does not prevent for keyboard users. */
+  const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+  function trapTab(e, container){
+    if(e.key !== 'Tab') return;
+    const items = Array.prototype.filter.call(
+      container.querySelectorAll(FOCUSABLE),
+      function(el){ return el.offsetParent !== null || el === document.activeElement; }
+    );
+    if(!items.length) return;
+    const first = items[0], last = items[items.length - 1];
+    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+
+  document.addEventListener('keydown', function(e){
+    const sheet = document.getElementById('moreSheet');
+    const sheetOpen = sheet.classList.contains('open');
+    if(e.key === 'Escape'){
+      if(sheetOpen){ closeMore(); return; }
+      closeSide();
+      return;
+    }
+    if(sheetOpen) trapTab(e, sheet);
+  });
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  }
+
+  window.addEventListener('hashchange', applyRoute);
+  /* Normalise a bare URL to a real route without adding a history entry. */
+  if(!location.hash) location.replace('#dashboard');
+  renderMore();
+  syncSideAria();
+  applyRoute();
+</script>
+</body>
+</html>

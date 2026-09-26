@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SchoolPlatform — Mwanza International Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body class="page-public">
+
+<div class="utility-bar">
+  <div class="container utility-row">
+    <div class="utility-left">
+      <span>📍 Igoma Road, Mwanza</span>
+      <span>📞 +255 754 000 111</span>
+      <span>✉ info@mwanzaacademy.sc.tz</span>
+    </div>
+    <nav class="portal-links">
+      <a href="Student Portal — School Platform.html" onclick="showToast('Opens the student portal.'); return true;">Student Portal</a>
+      <a href="Teacher Portal — School Platform.html" onclick="showToast('Opens the teacher portal.'); return true;">Teacher Portal</a>
+      <a href="Parent Portal — School Platform.html" onclick="showToast('Opens the parent portal.'); return true;">Parent Portal</a>
+      <a href="Admin Portal — School Platform.html" onclick="showToast('Opens the admin portal.'); return true;">Admin Login</a>
+    </nav>
+  </div>
+</div>
+<header>
+  <div class="container nav-wrap">
+    <a class="brand" href="#home"><span class="brand-mark"><img src="assets/img/logo.webp" alt=""></span>SchoolPlatform</a>
+    <nav class="desktop-nav">
+      <a href="#about">About</a>
+      <a href="#academics">Academics</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#news">News</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-primary nav-cta" href="#contact">Apply Now</a>
+    </div>
+    <button class="menu-btn" onclick="openMenu()" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+<aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+  <div class="drawer-head">
+    <div class="brand"><span class="brand-mark"><img src="assets/img/logo.webp" alt=""></span>SchoolPlatform</div>
+    <button class="drawer-close" onclick="closeMenu()" aria-label="Close menu">✕</button>
+  </div>
+  <nav class="drawer-nav">
+    <a href="#about" onclick="closeMenu()">About</a>
+    <a href="#academics" onclick="closeMenu()">Academics</a>
+    <a href="#gallery" onclick="closeMenu()">Gallery</a>
+    <a href="#news" onclick="closeMenu()">News</a>
+    <a href="#contact" onclick="closeMenu()">Contact</a>
+  </nav>
+  <div class="drawer-portals">
+    <a href="Student Portal — School Platform.html" onclick="showToast('Opens the student portal.'); return true;">Student Portal</a>
+    <a href="Teacher Portal — School Platform.html" onclick="showToast('Opens the teacher portal.'); return true;">Teacher Portal</a>
+    <a href="Parent Portal — School Platform.html" onclick="showToast('Opens the parent portal.'); return true;">Parent Portal</a>
+    <a href="Admin Portal — School Platform.html" onclick="showToast('Opens the admin portal.'); return true;">Admin Login</a>
+  </div>
+  <a href="#contact" class="btn btn-primary drawer-cta" onclick="closeMenu()">Apply Now</a>
+</aside>
+
+<section class="hero" id="home">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">MWANZA INTERNATIONAL ACADEMY</span>
+      <h1>Shaping future leaders through knowledge &amp; character</h1>
+      <p>A community where academic excellence and strong character grow side by side — run on SchoolPlatform, one connected system for the whole school.</p>
+      <div class="hero-actions">
+        <a href="#about" class="btn btn-primary btn-lg">Explore our school</a>
+        <a href="#contact" class="btn btn-secondary btn-lg">Contact us</a>
+      </div>
+      <div class="trust-row"><span>✓ Secure</span><span>✓ Parent &amp; student portals</span><span>✓ Government-registered</span></div>
+      <div class="hero-stats">
+        <div><b>1,240</b><span>Students enrolled</span></div>
+        <div><b>86</b><span>Teaching staff</span></div>
+        <div><b>98%</b><span>Pass rate 2025</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-art"></div>
+      <div class="float-card float-attendance">
+        <div class="fc-icon">✓</div>
+        <div><strong>96% attendance</strong><span>Today, all classes</span></div>
+      </div>
+      <div class="float-card float-event">
+        <div class="fc-icon amber">📅</div>
+        <div><strong>Founder's Day</strong><span>Coming up · Oct 3</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="feature-strip">
+  <div class="container">
+    <div class="fs-item"><div class="fs-icon">🎓</div><div><strong>Holistic Education</strong><span>Academic, emotional &amp; social growth</span></div></div>
+    <div class="fs-item"><div class="fs-icon">👥</div><div><strong>Expert Educators</strong><span>Passionate teachers, high standards</span></div></div>
+    <div class="fs-item"><div class="fs-icon">💡</div><div><strong>Innovative Learning</strong><span>Modern facilities &amp; methods</span></div></div>
+    <div class="fs-item"><div class="fs-icon">🌍</div><div><strong>Global Perspective</strong><span>Preparing students for the world</span></div></div>
+    <div class="fs-item"><div class="fs-icon">🛡</div><div><strong>Safe Campus</strong><span>Secure environment, every day</span></div></div>
+  </div>
+</div>
+
+<section id="about">
+  <div class="container about-grid">
+    <div class="about-photo" style="background-image:url('assets/img/hero.webp');"></div>
+    <div>
+      <span class="eyebrow">ABOUT OUR SCHOOL</span>
+      <h2 style="margin-top:10px; font-size:1.9rem;">A school built on discipline, curiosity and care</h2>
+      <p style="margin-top:16px; color:var(--muted);">Since 2011, Mwanza International Academy has offered a rounded education across primary and secondary levels, combining a rigorous curriculum with strong pastoral care and a wide range of co-curricular activities.</p>
+      <div class="value-list">
+        <div class="value-item"><span class="value-dot"></span><div><h4>Mission</h4><p>To nurture confident, capable learners who lead with integrity in their communities.</p></div></div>
+        <div class="value-item"><span class="value-dot"></span><div><h4>Vision</h4><p>To be the region's most trusted school for academic and personal growth.</p></div></div>
+        <div class="value-item"><span class="value-dot"></span><div><h4>Principal's message</h4><p>"Every learner at MIA is known, supported, and pushed to reach further." — Mrs. A. Kessy, Principal</p></div></div>
+      </div>
+      <div class="stat-row">
+        <div><span class="sr-icon">🎓</span><div><b>15+</b><span>Years of excellence</span></div></div>
+        <div><span class="sr-icon">👨‍🎓</span><div><b>1,240+</b><span>Happy students</span></div></div>
+        <div><span class="sr-icon">🏆</span><div><b>100+</b><span>Awards &amp; achievements</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="academics" id="academics">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">ACADEMICS</span>
+      <h2>Discover our programs</h2>
+      <p>A comprehensive curriculum designed to inspire and challenge every learner, from early years through to national examinations.</p>
+    </div>
+    <div class="program-grid">
+      <div class="program-card card">
+        <div class="program-photo" style="background-image:url('assets/img/hero.webp');"></div>
+        <div class="program-body"><h4>Early Years</h4><p>A nurturing start for our youngest learners.</p><span class="program-tag">Ages 3–5</span></div>
+      </div>
+      <div class="program-card card">
+        <div class="program-photo" style="background-image:url('assets/img/hero.webp');"></div>
+        <div class="program-body"><h4>Primary School</h4><p>Building strong foundations for the future.</p><span class="program-tag">Standard I–VII</span></div>
+      </div>
+      <div class="program-card card">
+        <div class="program-photo" style="background-image:url('assets/img/graduation.webp');"></div>
+        <div class="program-body"><h4>O-Level Secondary</h4><p>Encouraging curiosity and critical thinking.</p><span class="program-tag">Form I–IV</span></div>
+      </div>
+      <div class="program-card card">
+        <div class="program-photo" style="background-image:url('assets/img/graduation.webp');"></div>
+        <div class="program-body"><h4>A-Level Secondary</h4><p>Preparing leaders for college and beyond.</p><span class="program-tag">Form V–VI</span></div>
+      </div>
+      <div class="program-card card">
+        <div class="program-photo" style="background-image:url('assets/img/football.webp');"></div>
+        <div class="program-body"><h4>Co-Curricular</h4><p>Exploring talents beyond the classroom.</p><span class="program-tag">Clubs &amp; sports</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-banner">
+  <div class="container">
+    <div><b>15+</b><span>Years of Excellence</span></div>
+    <div><b>1,240+</b><span>Students Enrolled</span></div>
+    <div><b>86</b><span>Qualified Teachers</span></div>
+    <div><b>100+</b><span>Awards Won</span></div>
+    <div><b>98%</b><span>Pass Rate</span></div>
+  </div>
+</div>
+
+<section id="gallery">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">GALLERY</span>
+      <h2>Life at Mwanza International Academy</h2>
+      <p>A look inside our campus, classrooms and student activities throughout the year.</p>
+    </div>
+    <div class="filters">
+      <button class="filter-chip active" data-cat="all" onclick="filterGallery('all', this)">All</button>
+      <button class="filter-chip" data-cat="campus" onclick="filterGallery('campus', this)">Campus</button>
+      <button class="filter-chip" data-cat="classrooms" onclick="filterGallery('classrooms', this)">Classrooms</button>
+      <button class="filter-chip" data-cat="sports" onclick="filterGallery('sports', this)">Sports</button>
+      <button class="filter-chip" data-cat="events" onclick="filterGallery('events', this)">Events</button>
+    </div>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="g-item show" data-cat="campus" style="background-image:linear-gradient(180deg, rgba(11,31,58,.12), rgba(11,31,58,.5)), url('assets/img/hero.webp');"><span>Main campus</span></div>
+      <div class="g-item show" data-cat="classrooms" style="background-image:linear-gradient(180deg, rgba(11,31,58,.12), rgba(11,31,58,.5)), url('assets/img/hero.webp');"><span>Science lab</span></div>
+      <div class="g-item show" data-cat="sports" style="background-image:linear-gradient(180deg, rgba(11,31,58,.12), rgba(11,31,58,.5)), url('assets/img/football.webp');"><span>Athletics field</span></div>
+      <div class="g-item show" data-cat="events" style="background-image:linear-gradient(180deg, rgba(11,31,58,.12), rgba(11,31,58,.5)), url('assets/img/graduation.webp');"><span>Graduation day</span></div>
+      <div class="g-item show" data-cat="classrooms" style="background-image:linear-gradient(180deg, rgba(11,31,58,.12), rgba(11,31,58,.5)), url('assets/img/hero.webp');"><span>Library</span></div>
+      <div class="g-item show" data-cat="events" style="background-image:linear-gradient(180deg, rgba(11,31,58,.12), rgba(11,31,58,.5)), url('assets/img/football.webp');"><span>Sports day</span></div>
+      <div class="g-item show" data-cat="campus" style="background-image:linear-gradient(180deg, rgba(11,31,58,.12), rgba(11,31,58,.5)), url('assets/img/hero1.webp');"><span>School gate</span></div>
+      <div class="g-item show" data-cat="sports" style="background-image:linear-gradient(180deg, rgba(11,31,58,.12), rgba(11,31,58,.5)), url('assets/img/basket.webp');"><span>Basketball court</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="academics" id="news">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">NEWS &amp; EVENTS</span>
+      <h2>What's happening at MIA</h2>
+    </div>
+    <div class="news-grid">
+      <div class="news-card card">
+        <div class="news-thumb" style="background-image:url('assets/img/football.webp');"></div>
+        <div class="news-body">
+          <div class="news-date">14 September 2026</div>
+          <h4>Annual Sports Day 2026</h4>
+          <p>Students competed across athletics, football and netball in front of parents and staff.</p>
+        </div>
+      </div>
+      <div class="news-card card">
+        <div class="news-thumb" style="background-image:url('assets/img/graduation.webp');"></div>
+        <div class="news-body">
+          <div class="news-date">2 September 2026</div>
+          <h4>Form Six results released</h4>
+          <p>MIA recorded a 98% pass rate in this year's national examinations.</p>
+        </div>
+      </div>
+      <div class="news-card card">
+        <div class="news-thumb" style="background-image:url('assets/img/hero.webp');"></div>
+        <div class="news-body">
+          <div class="news-date">20 August 2026</div>
+          <h4>New science laboratory opens</h4>
+          <p>A fully equipped lab for chemistry and biology practicals is now in use.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="admissions">
+  <div class="container admissions-grid">
+    <div class="admissions-photo" style="background-image:url('assets/img/hero1.webp');"></div>
+    <div>
+      <span class="eyebrow">ADMISSIONS</span>
+      <h2 style="margin-top:10px; font-size:1.9rem;">Begin your journey toward a bright future</h2>
+      <p style="margin-top:14px; color:var(--muted); max-width:44ch;">Join a community where your child will be inspired, supported, and empowered to achieve their dreams.</p>
+      <div class="admissions-actions">
+        <a href="#contact" class="btn btn-primary btn-lg">Apply Now</a>
+        <a href="#contact" class="btn btn-secondary btn-lg">Schedule a Tour</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">CONTACT US</span>
+      <h2>Get in touch with the school</h2>
+      <p>Have a question about admissions or our programs? Send us a message.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div><h4>Address</h4><p>Igoma Road, Mwanza, Tanzania</p></div>
+        <div><h4>Phone</h4><p>+255 754 000 111</p></div>
+        <div><h4>Email</h4><p>info@mwanzaacademy.sc.tz</p></div>
+        <div><h4>Office hours</h4><p>Mon – Fri, 7:30am – 4:30pm</p></div>
+      </div>
+      <form onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <input type="text" placeholder="Full name" required>
+          <input type="email" placeholder="Email address" required>
+        </div>
+        <div class="form-row">
+          <input type="tel" placeholder="Phone number">
+          <input type="text" placeholder="Subject">
+        </div>
+        <textarea placeholder="Your message" required></textarea>
+        <button class="btn btn-primary" type="submit" style="justify-self:start;">Send message</button>
+        <p class="form-note">This is a prototype form — submissions aren't stored yet.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="color:#fff; margin-bottom:12px;"><span class="brand-mark"><img src="assets/img/logo.webp" alt=""></span>SchoolPlatform</div>
+        <p>Inspiring minds, shaping futures. Building a better tomorrow at Mwanza International Academy.</p>
+      </div>
+      <div>
+        <h5>Quick Links</h5>
+        <ul><li><a href="#about">About Us</a></li><li><a href="#academics">Academics</a></li><li><a href="#gallery">Campus Life</a></li><li><a href="#news">News &amp; Events</a></li><li><a href="#contact">Contact Us</a></li></ul>
+      </div>
+      <div>
+        <h5>Resources</h5>
+        <ul><li><a href="Parent Portal — School Platform.html" onclick="showToast('Opens the parent portal.'); return true;">Parent Portal</a></li><li><a href="Student Portal — School Platform.html" onclick="showToast('Opens the student portal.'); return true;">Student Login</a></li><li><a href="Teacher Portal — School Platform.html" onclick="showToast('Opens the teacher portal.'); return true;">Teacher Portal</a></li><li><a href="Admin Portal — School Platform.html" onclick="showToast('Opens the admin portal.'); return true;">Admin Login</a></li></ul>
+      </div>
+      <div>
+        <h5>Newsletter</h5>
+        <p>Stay updated with our latest news and events.</p>
+        <form class="foot-newsletter" onsubmit="event.preventDefault(); showToast('Subscribed — thanks!'); event.target.reset();">
+          <input type="email" placeholder="Enter your email" required>
+          <button type="submit">Join</button>
+        </form>
+      </div>
+    </div>
+    <div class="foot-bottom">© 2026 SchoolPlatform · Mwanza International Academy — All rights reserved.</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  function openMenu(){
+    document.getElementById('menuOverlay').classList.add('show');
+    document.getElementById('mobileDrawer').classList.add('show');
+    document.getElementById('mobileDrawer').setAttribute('aria-hidden','false');
+    document.body.classList.add('menu-open');
+  }
+  function closeMenu(){
+    document.getElementById('menuOverlay').classList.remove('show');
+    document.getElementById('mobileDrawer').classList.remove('show');
+    document.getElementById('mobileDrawer').setAttribute('aria-hidden','true');
+    document.body.classList.remove('menu-open');
+  }
+  document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeMenu(); });
+  function filterGallery(cat, el){
+    document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.g-item').forEach(item=>{
+      item.classList.toggle('show', cat==='all' || item.dataset.cat===cat);
+    });
+  }
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2600);
+  }
+  function handleSubmit(e){
+    e.preventDefault();
+    showToast("Message sent — we'll be in touch soon.");
+    e.target.reset();
+  }
+</script>
+</body>
+</html>

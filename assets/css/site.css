@@ -1,0 +1,1104 @@
+/* ============================================================
+   SchoolPlatform — shared stylesheet
+   ------------------------------------------------------------
+   Loaded by all 5 pages:
+     • index.html                                (body.page-public)
+     • Teacher Portal — School Platform.html     (body.page-portal)
+     • Parent Portal — School Platform.html      (body.page-portal page-parent)
+     • Admin Portal — School Platform.html        (body.page-portal page-admin)
+     • Student Portal — School Platform.html      (body.page-portal page-student)
+
+   The two pages ship two different design systems that reuse the
+   same variable and class names with different values (e.g. both
+   define --navy, both define .btn-primary). To keep one file
+   without bleeding styles between pages, each page sets a class on
+   <body> and the conflicting rules are scoped to it.
+
+   Layer order:
+     1. Reset
+     2. Page tokens        (custom properties inherit from <body>)
+     3. Shared primitives  (identical on both pages)
+     4. Public site
+     5. Teacher portal
+     6. Responsive
+      7. Parent portal
+      8. Admin portal
+      9. Student portal
+   ============================================================ */
+
+
+/* ============================================================
+   1. RESET
+   Identical in both pages, so emitted once.
+   ============================================================ */
+
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:inherit; margin:0; padding:0;}
+
+a{color:inherit; text-decoration:none;}
+img{max-width:100%; display:block;}
+
+/* Applies to both pages. The portal has no in-page anchor
+   navigation, so smooth scrolling is inert there. */
+html{scroll-behavior:smooth; scroll-padding-top:80px; overflow-x:hidden;}
+
+
+/* ============================================================
+   2. PAGE TOKENS
+   Custom properties inherit, so each page sees only its own
+   palette. This avoids renaming any variable or class.
+   ============================================================ */
+
+body.page-public{
+  --navy:#0b1f3a;
+  --navy2:#102b4d;
+  --green:#16a06a;
+  --green2:#067f54;
+  --amber:#d99118;
+  --mint:#e8f7f1;
+  --gold:#d99118;
+  --gold2:#b97812;
+  --bg:#f5f7fb;
+  --surface:#fff;
+  --line:#e7ebf2;
+  --muted:#6b778c;
+  --text:#172235;
+  --shadow:0 7px 25px rgba(8,43,82,.04);
+  /* declared but never referenced — candidates for removal */
+  --blue:#2563eb;
+  --purple:#7c5ce0;
+}
+
+body.page-portal{
+  --green:#04A066;
+  --green-dark:#038a56;
+  --green-pale:#E6F6EF;
+  --navy:#062D5B;
+  --bg:#F7FBFA;
+  --surface:#fff;
+  --line:#E3ECE8;
+  --muted:#6B7C88;
+  --text:#152A36;
+  --amber:#D99118;
+  --amber-pale:#FDF1DC;
+  --red:#D8483E;
+  --red-pale:#FBEAEA;
+  --shadow:0 6px 20px rgba(6,45,91,.06);
+  /* declared but never referenced — candidate for removal */
+  --navy2:#0B3E76;
+}
+
+
+/* ============================================================
+   3. SHARED PRIMITIVES
+   Rules whose declarations are identical on both pages, or where
+   only the differing parts are scoped below.
+   ============================================================ */
+
+body{
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+}
+body.page-public{
+  font-family:'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:var(--surface);
+  line-height:1.6;
+  font-size:15px;
+}
+body.page-portal{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  font-size:14.5px;
+}
+
+/* Typographic families and weights differ per page. */
+.page-public h1, .page-public h2, .page-public h3{
+  color:var(--navy);
+  font-weight:800;
+  letter-spacing:-.02em;
+  line-height:1.15;
+}
+.page-portal h1, .page-portal h2, .page-portal h3, .page-portal h4{
+  font-family:'Poppins',sans-serif;
+  color:var(--navy);
+  font-weight:700;
+  letter-spacing:-.01em;
+}
+.page-portal button, .page-portal .btn{font-family:'Montserrat',sans-serif;}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:9px;
+  border:1px solid transparent;
+  cursor:pointer;
+}
+.page-public .btn{
+  min-height:44px;
+  padding:11px 18px;
+  font-weight:700;
+  font-size:.88rem;
+  transition:background .15s, transform .1s;
+}
+.page-portal .btn{
+  gap:6px;
+  min-height:40px;
+  padding:10px 16px;
+  font-weight:600;
+  font-size:.82rem;
+  transition:background .15s,border-color .15s;
+}
+
+.page-public .btn-primary{background:var(--gold); color:#fff;}
+.page-public .btn-primary:hover{background:var(--gold2);}
+.page-portal .btn-primary{background:var(--green); color:#fff;}
+.page-portal .btn-primary:hover{background:var(--green-dark);}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+}
+.page-public .card{border-radius:14px;}
+.page-portal .card{border-radius:16px;}
+
+.brand{display:flex; align-items:center;}
+.page-public .brand{gap:9px; font-weight:800; color:var(--navy); white-space:nowrap; font-size:1.05rem;}
+.page-portal .brand{gap:10px; padding:6px 8px 22px; font-family:'Poppins',sans-serif; font-weight:700; color:#fff; font-size:1.02rem;}
+
+.brand-mark{display:grid; place-items:center;}
+.page-public .brand-mark{width:30px; height:30px; border-radius:8px; background:var(--mint); color:var(--green); font-weight:800; font-size:.85rem;}
+/* Pale green, not the brand green: logo.webp is a dark navy mark
+   (avg luma 73) and reads at only 1.68:1 on #04A066, versus 3.32:1
+   here. --green-pale is declared on body.page-portal; --mint exists
+   only on body.page-public and would compute to transparent here. */
+.page-portal .brand-mark{width:34px; height:34px; border-radius:9px; background:var(--green-pale); color:#fff; font-weight:700; font-size:.85rem;}
+.brand-mark img{width:100%; height:100%; object-fit:contain;}
+
+/* Toast — previously portal-only. Promoted to shared so the public
+   site's showToast() renders correctly; it had no CSS at all. */
+.toast{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--navy);
+  color:#fff;
+  padding:13px 20px;
+  border-radius:10px;
+  font-size:.85rem;
+  font-weight:600;
+  opacity:0;
+  pointer-events:none;
+  transition:all .25s ease;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+  z-index:100;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+  outline:2px solid var(--green);
+  outline-offset:2px;
+}
+
+
+/* ============================================================
+   4. PUBLIC SITE  (index.html)
+   ============================================================ */
+
+body.page-public{overflow-x:hidden;}
+
+/* HEADER — scoped because the portal also renders a <header> */
+.page-public header{
+  position:sticky;
+  top:env(safe-area-inset-top,0px);
+  z-index:50;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+.nav-wrap{height:76px; display:flex; align-items:center; gap:34px;}
+.desktop-nav{display:flex; gap:24px; flex:1; font-size:14px; color:var(--muted);}
+.desktop-nav a{transition:color .15s;}
+.desktop-nav a:hover{color:var(--green);}
+.nav-actions{display:flex; align-items:center; gap:18px; font-size:14px;}
+.login-link{font-weight:600; color:var(--navy);}
+/* Scoped: these would otherwise lose to `.page-public .btn`
+   (0,1,0) on both padding and border-color. */
+.page-public .btn-lg{padding:14px 21px;}
+.page-public .btn-secondary{background:#fff; color:var(--navy); border-color:#cbd8e4;}
+.page-public .btn-secondary:hover{border-color:var(--navy);}
+.menu-btn{display:none; margin-left:auto; width:44px; height:44px; background:none; border:0; color:var(--navy); font-size:22px; cursor:pointer;}
+
+/* MOBILE DRAWER — .menu-overlay is scoped: the portal defines a
+   different overlay colour and z-index for the same class name. */
+.page-public .menu-overlay{position:fixed; inset:0; background:rgba(11,31,58,.5); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:60;}
+.page-public .menu-overlay.show{opacity:1; pointer-events:auto;}
+.mobile-drawer{position:fixed; top:0; right:0; bottom:0; width:min(300px,84%); background:#fff; z-index:70; display:flex; flex-direction:column; padding:20px 22px calc(22px + env(safe-area-inset-bottom,0px)); gap:20px; transform:translateX(100%); transition:transform .3s ease; box-shadow:-12px 0 34px rgba(8,43,82,.18); overflow-y:auto;}
+.mobile-drawer.show{transform:translateX(0);}
+.drawer-head{display:flex; justify-content:space-between; align-items:center;}
+.drawer-close{width:36px; height:36px; background:var(--bg); border:0; border-radius:8px; font-size:16px; color:var(--navy); cursor:pointer;}
+.drawer-nav{display:flex; flex-direction:column;}
+.drawer-nav a{padding:13px 2px; font-weight:700; font-size:1rem; color:var(--navy); border-bottom:1px solid var(--line);}
+.drawer-portals{display:flex; flex-direction:column; gap:2px; margin-top:-4px;}
+.drawer-portals a{padding:10px 2px; font-size:.86rem; color:var(--muted); font-weight:600;}
+.drawer-cta{margin-top:auto;}
+body.page-public.menu-open{overflow:hidden;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#fff 0%,#eef8f5 100%); padding:70px 0;}
+.hero-grid{display:grid; grid-template-columns:1fr 1.2fr; gap:55px; align-items:center;}
+/* Scoped: the portal reuses .eyebrow for its topbar date, which must
+   not inherit the public site's uppercase / letter-spaced treatment. */
+.page-public .eyebrow{letter-spacing:.12em; text-transform:uppercase; color:var(--gold2); font-size:11px; font-weight:800;}
+.hero h1{font-size:clamp(2.1rem,3.6vw,3.1rem); margin-top:14px; max-width:14ch;}
+.hero-copy p{margin-top:18px; color:var(--muted); font-size:17px; line-height:1.75; max-width:44ch;}
+.hero-actions{margin-top:30px; display:flex; gap:14px; flex-wrap:wrap;}
+.trust-row{margin-top:30px; display:flex; gap:20px; font-size:12px; font-weight:600; color:#5b7185; flex-wrap:wrap;}
+.hero-stats{display:grid; grid-template-columns:repeat(3,1fr); margin-top:30px; border-top:1px solid var(--line); padding-top:22px; max-width:480px;}
+.hero-stats b{display:block; font-size:1.5rem; color:var(--navy);}
+.hero-stats span{font-size:.78rem; color:var(--muted);}
+.hero-visual{position:relative; padding:0 18px 34px 0;}
+/* Pure background box — the crest/heading/caption were removed, leaving
+   the photo alone. Both layers live here rather than in index.html
+   because the navy backing has to stay aligned to the photo's own
+   feathered alpha channel, and a 2-layer background needs per-layer
+   background-size. Gradient geometry (centre 68%/58%, radii 70%/66%)
+   is derived from the measured alpha footprint of hero1.webp: the dense
+   core sits right-of-centre and fades to nothing at the top-left, so
+   the backing fades out on the same edges and no rectangle is visible.
+   The final stop is rgba(11,31,58,0) rather than `transparent` to avoid
+   grey interpolation from non-premultiplied alpha in older engines.
+   url() resolves against this file, hence ../img/. */
+.hero-art{background-color:transparent; background-image:radial-gradient(ellipse 70% 66% at 68% 58%, var(--navy) 0%, var(--navy) 34%, rgba(11,31,58,0) 100%), url(../img/hero1.webp); background-size:auto, cover; background-position:center, center; background-repeat:no-repeat, no-repeat; min-height:380px; position:relative; overflow:hidden;}
+.float-card{position:absolute; background:#fff; border-radius:13px; padding:13px 16px; box-shadow:0 14px 34px rgba(8,43,82,.14); display:flex; align-items:center; gap:11px; opacity:0; animation:floatIn .5s ease forwards;}
+.float-attendance{top:-22px; left:-14px; animation-delay:.15s;}
+.float-event{bottom:22px; right:-22px; animation-delay:.4s;}
+.float-card .fc-icon{width:34px; height:34px; border-radius:9px; background:var(--mint); color:var(--green); display:grid; place-items:center; font-weight:800; font-size:.8rem; flex-shrink:0;}
+.float-card .fc-icon.amber{background:#fdf1dc; color:var(--amber);}
+.float-card strong{display:block; font-size:.92rem; color:var(--navy);}
+.float-card span{font-size:.72rem; color:var(--muted);}
+@keyframes floatIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){.float-card{animation:none; opacity:1;}}
+
+/* scoped because the portal also renders a <section> */
+.page-public section{padding:70px 0;}
+.container{width:min(1180px,92%); margin:auto;}
+.section-heading{text-align:center; max-width:640px; margin:0 auto 40px;}
+.section-heading h2{font-size:clamp(1.7rem,2.6vw,2.1rem); margin:10px 0;}
+.section-heading p{color:var(--muted); font-size:1rem;}
+
+/* ABOUT */
+.about-grid{display:grid; grid-template-columns:.9fr 1.1fr; gap:56px; align-items:center;}
+.about-photo{background-color:var(--mint); background-size:cover; background-position:center; border-radius:16px; min-height:320px; display:flex; align-items:center; justify-content:center;}
+.about-photo svg{width:65%;}
+.value-list{margin-top:24px; display:grid; gap:16px;}
+.value-item{display:flex; gap:14px; align-items:flex-start;}
+.value-dot{width:9px; height:9px; border-radius:50%; background:var(--green); margin-top:8px; flex-shrink:0;}
+.value-item h4{font-weight:700; color:var(--navy); font-size:.98rem;}
+.value-item p{color:var(--muted); font-size:.92rem; margin-top:3px; line-height:1.6;}
+
+/* ACADEMICS */
+.academics{background:var(--bg);}
+.track-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px;}
+.track-card{padding:28px;}
+.track-card h3{font-size:1.2rem;}
+.track-card ul{margin-top:16px; list-style:none; display:grid; gap:9px; font-size:.9rem; color:var(--muted);}
+.track-card li:before{content:"— "; color:var(--green);}
+
+/* GALLERY */
+.filters{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:30px; justify-content:center;}
+.filter-chip{padding:9px 18px; border-radius:999px; border:1px solid var(--line); font-size:.83rem; font-weight:600; color:var(--muted); cursor:pointer; background:#fff; transition:all .15s;}
+.filter-chip.active, .filter-chip:hover{background:var(--navy); color:#fff; border-color:var(--navy);}
+.gallery-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+.g-item{aspect-ratio:1/1; border-radius:14px; display:none; align-items:flex-end; padding:16px; color:#fff; font-size:.8rem; font-weight:700; background-size:cover; background-position:center; background-color:var(--navy2);}
+.g-item.show{display:flex;}
+.g-item span{background:rgba(11,31,58,.5); padding:4px 10px; border-radius:6px;}
+
+/* NEWS */
+.news-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+.news-card{overflow:hidden;}
+.news-thumb{height:140px; background-color:var(--navy); background-size:cover; background-position:center;}
+.news-body{padding:20px;}
+.news-date{font-size:.75rem; color:var(--green2); font-weight:700;}
+.news-card h4{font-weight:700; color:var(--navy); margin-top:8px; font-size:1rem;}
+.news-card p{font-size:.86rem; color:var(--muted); margin-top:8px;}
+
+/* CONTACT / CTA — form rules are scoped: they are bare element
+   selectors with white-on-dark styling that must not reach the
+   portal's light-themed inputs. */
+.contact{background:var(--navy); color:#fff;}
+.contact .section-heading h2{color:#fff;}
+.contact .section-heading p{color:rgba(255,255,255,.65);}
+.contact-grid{display:grid; grid-template-columns:.9fr 1.1fr; gap:50px;}
+.contact-info{display:grid; gap:20px;}
+.contact-info div h4{font-size:.92rem; font-weight:700; color:#7fe0b8;}
+.contact-info div p{color:rgba(255,255,255,.72); font-size:.88rem; margin-top:4px;}
+.page-public form{display:grid; gap:14px;}
+.form-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.page-public input, .page-public textarea{width:100%; padding:13px 15px; border-radius:9px; border:1px solid rgba(255,255,255,.18); background:rgba(255,255,255,.06); color:#fff; font-family:inherit; font-size:.9rem;}
+.page-public input::placeholder, .page-public textarea::placeholder{color:rgba(255,255,255,.42);}
+.page-public input:focus, .page-public textarea:focus{outline:2px solid var(--green); outline-offset:1px;}
+.page-public textarea{min-height:100px; resize:vertical;}
+.form-note{font-size:.76rem; color:rgba(255,255,255,.45);}
+
+footer{background:#061f3a; color:#b8c8d8; padding:20px 0; font-size:12px;}
+.foot-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;}
+
+/* UTILITY BAR + PORTAL LINKS */
+.utility-bar{background:var(--navy); color:#c9d6e8; font-size:.78rem;}
+.utility-row{display:flex; justify-content:space-between; align-items:center; height:38px; gap:16px;}
+.utility-left{display:flex; gap:20px;}
+.utility-left span{white-space:nowrap;}
+.portal-links{display:flex; gap:4px;}
+.portal-links a{padding:6px 10px; border-radius:6px; font-weight:600; color:#c9d6e8; white-space:nowrap; transition:background .15s, color .15s;}
+.portal-links a:hover{background:rgba(255,255,255,.1); color:#fff;}
+
+/* FEATURE STRIP */
+.feature-strip{background:var(--navy); margin-top:-1px;}
+.feature-strip .container{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; padding:26px 0;}
+.feature-strip .fs-item{display:flex; gap:10px; align-items:flex-start; color:#cfdaea;}
+.feature-strip .fs-icon{width:34px; height:34px; border-radius:9px; background:rgba(255,255,255,.1); display:grid; place-items:center; color:var(--gold); flex-shrink:0; font-size:1rem;}
+.feature-strip strong{display:block; color:#fff; font-size:.85rem;}
+.feature-strip span{font-size:.74rem; color:#9fb0c8; line-height:1.4;}
+
+/* STAT ROW (about) */
+.stat-row{display:flex; gap:28px; margin-top:22px; flex-wrap:wrap;}
+.stat-row div{display:flex; gap:9px; align-items:center;}
+.stat-row .sr-icon{width:36px; height:36px; border-radius:9px; background:var(--mint); color:var(--green); display:grid; place-items:center; font-size:.95rem; flex-shrink:0;}
+.stat-row b{display:block; font-size:1.05rem; color:var(--navy);}
+.stat-row span{font-size:.72rem; color:var(--muted);}
+
+/* PROGRAM CARDS */
+.program-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:16px;}
+.program-card{overflow:hidden;}
+.program-photo{height:110px; background-color:var(--navy2); background-size:cover; background-position:center;}
+.program-body{padding:16px;}
+.program-body h4{font-weight:700; color:var(--navy); font-size:.94rem;}
+.program-body p{font-size:.8rem; color:var(--muted); margin-top:6px; line-height:1.5;}
+.program-tag{display:inline-block; margin-top:10px; font-size:.72rem; font-weight:700; color:var(--gold2);}
+
+/* STATS BANNER */
+.stats-banner{background:var(--navy);}
+.stats-banner .container{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; padding:34px 0;}
+.stats-banner div{text-align:center; color:#fff;}
+.stats-banner b{display:block; font-size:1.7rem; color:var(--gold);}
+.stats-banner span{font-size:.76rem; color:#b9c7dc;}
+
+/* ADMISSIONS CTA */
+.admissions{background:var(--bg);}
+.admissions-grid{display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:center;}
+.admissions-photo{border-radius:16px; min-height:260px; background-color:var(--navy); background-size:cover; background-position:center;}
+.admissions-actions{margin-top:26px; display:flex; gap:14px; flex-wrap:wrap;}
+
+/* FOOTER expanded */
+.footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1.3fr; gap:32px; padding:48px 0 28px;}
+.footer-grid h5{color:#fff; font-size:.86rem; margin-bottom:14px;}
+.footer-grid ul{list-style:none; display:grid; gap:9px; font-size:.82rem;}
+.footer-grid p{font-size:.82rem; line-height:1.6; max-width:32ch;}
+.foot-newsletter{display:flex; margin-top:10px;}
+.foot-newsletter input{border-radius:8px 0 0 8px; font-size:.82rem;}
+.foot-newsletter button{border-radius:0 8px 8px 0; background:var(--gold); color:var(--navy); border:0; padding:0 16px; font-weight:700; cursor:pointer;}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.08); padding:16px 0; text-align:center; font-size:.78rem;}
+
+
+/* ============================================================
+   5. TEACHER PORTAL
+   ============================================================ */
+
+/* SHELL */
+.app-shell{display:flex; min-height:100vh;}
+.sidebar{width:250px; background:var(--navy); color:#c9d9e8; display:flex; flex-direction:column; padding:22px 14px; position:fixed; inset:0 auto 0 0; z-index:40;}
+.side-nav{display:flex; flex-direction:column; gap:2px; overflow-y:auto;}
+.nav-item{display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:9px; color:#a9bdd0; font-weight:600; font-size:.85rem; cursor:pointer; background:none; border:0; text-align:left; width:100%;}
+.nav-item:hover{background:rgba(255,255,255,.06); color:#fff;}
+.nav-item.active{background:var(--green); color:#fff;}
+.nav-icon{width:18px; text-align:center;}
+.sidebar-foot{margin-top:auto; display:flex; gap:10px; align-items:center; padding:12px; border-radius:10px; background:rgba(255,255,255,.05);}
+.avatar{width:34px; height:34px; border-radius:9px; background:var(--green-pale); color:var(--green-dark); display:grid; place-items:center; font-weight:700; font-size:.78rem; flex-shrink:0;}
+.sidebar-foot strong{display:block; font-size:.8rem; color:#fff;}
+.sidebar-foot span{font-size:.7rem; color:#93a8bc;}
+
+.main-area{margin-left:250px; flex:1; min-width:0;}
+.topbar{height:74px; background:var(--surface); border-bottom:1px solid var(--line); display:flex; align-items:center; padding:0 28px; gap:18px; position:sticky; top:0; z-index:30;}
+.topbar h1{font-size:1.15rem;}
+.topbar .eyebrow{font-size:.72rem; color:var(--muted); font-weight:600;}
+.topbar-spacer{flex:1;}
+.icon-btn{width:38px; height:38px; border-radius:9px; border:1px solid var(--line); background:#fff; display:grid; place-items:center; color:var(--navy); cursor:pointer; position:relative;}
+.icon-btn b{position:absolute; top:-4px; right:-4px; background:var(--red); color:#fff; font-size:.6rem; padding:2px 5px; border-radius:8px;}
+.mobile-toggle{display:none;}
+
+.page-content{padding:26px 28px 90px;}
+.view{display:none;}
+.view.active{display:block;}
+
+.page-portal .btn-outline{background:#fff; border-color:var(--line); color:var(--navy);}
+.page-portal .btn-outline:hover{border-color:var(--green);}
+
+/* KPI */
+.kpi-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px;}
+.kpi-card{padding:18px;}
+.kpi-card span.label{font-size:.76rem; color:var(--muted); font-weight:600;}
+.kpi-card strong{display:block; font-family:'Poppins',sans-serif; font-size:1.7rem; color:var(--navy); margin-top:8px;}
+
+.section-title{font-size:.78rem; font-weight:700; letter-spacing:.06em; color:var(--muted); margin:26px 0 12px;}
+.panel{padding:18px;}
+
+/* TODAY CLASSES */
+.class-row{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 4px; border-bottom:1px solid var(--line);}
+.class-row:last-child{border-bottom:0;}
+.class-time{width:60px; font-weight:700; color:var(--navy); font-size:.86rem; flex-shrink:0;}
+.class-info strong{display:block; font-size:.92rem; color:var(--navy);}
+.class-info span{font-size:.78rem; color:var(--muted);}
+.class-row .btn{flex-shrink:0;}
+
+/* QUICK ACTIONS */
+.quick-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:10px;}
+.quick-btn{display:flex; flex-direction:column; align-items:center; gap:8px; padding:16px 8px; border-radius:12px; border:1px solid var(--line); background:#fff; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:600; font-size:.76rem; color:var(--navy);}
+.quick-btn:hover{border-color:var(--green); background:var(--green-pale);}
+.quick-btn .qi{font-size:1.2rem;}
+
+/* TABLE shared */
+.table-toolbar{display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:16px;}
+.search-box{flex:1; min-width:180px; display:flex; align-items:center; gap:8px; border:1px solid var(--line); border-radius:9px; padding:0 12px; height:40px; background:#fbfdfc;}
+.search-box input{border:0; outline:0; background:transparent; font:inherit; width:100%; font-size:.85rem;}
+select{height:40px; border:1px solid var(--line); border-radius:9px; padding:0 10px; font:inherit; background:#fff; color:var(--navy); font-weight:600; font-size:.8rem;}
+table{width:100%; border-collapse:collapse;}
+th{font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); text-align:left; padding:10px 12px; border-bottom:1px solid var(--line);}
+td{padding:12px; border-bottom:1px solid var(--line); font-size:.85rem;}
+tr:last-child td{border-bottom:0;}
+.student-cell{display:flex; align-items:center; gap:10px;}
+.student-cell strong{font-size:.85rem; color:var(--navy);}
+
+/* ATTENDANCE STATUS BUTTONS */
+.status-group{display:flex; gap:6px;}
+.status-btn{border:1px solid var(--line); background:#fff; border-radius:7px; padding:6px 10px; font-size:.72rem; font-weight:700; cursor:pointer; color:var(--muted);}
+.status-btn[data-s="present"].on{background:var(--green-pale); color:var(--green-dark); border-color:var(--green);}
+.status-btn[data-s="absent"].on{background:var(--red-pale); color:var(--red); border-color:var(--red);}
+.status-btn[data-s="late"].on{background:var(--amber-pale); color:var(--amber); border-color:var(--amber);}
+.attendance-summary{display:flex; gap:26px; margin-top:18px; padding-top:16px; border-top:1px solid var(--line); flex-wrap:wrap;}
+.attendance-summary div{text-align:center;}
+.attendance-summary strong{display:block; font-family:'Poppins',sans-serif; font-size:1.3rem; color:var(--navy);}
+.attendance-summary span{font-size:.72rem; color:var(--muted);}
+.save-row{display:flex; justify-content:flex-end; margin-top:16px;}
+
+/* MARKS */
+.marks-input{width:64px; padding:7px 8px; border:1px solid var(--line); border-radius:7px; text-align:center; font:inherit; font-weight:700; color:var(--navy);}
+.grade-pill{display:inline-block; padding:4px 10px; border-radius:999px; font-size:.74rem; font-weight:700; background:var(--green-pale); color:var(--green-dark);}
+.selectors-row{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px;}
+.avg-row{display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:16px; border-top:1px solid var(--line);}
+.avg-row strong{font-family:'Poppins',sans-serif; color:var(--navy); font-size:1.1rem;}
+
+/* CLASS PROFILE */
+.class-head{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:18px;}
+.class-stats{display:flex; gap:24px;}
+.class-stats div{text-align:center;}
+.class-stats strong{display:block; font-family:'Poppins',sans-serif; font-size:1.2rem; color:var(--navy);}
+.class-stats span{font-size:.72rem; color:var(--muted);}
+.tab-row{display:flex; gap:6px; margin-bottom:18px;}
+.tab-btn{padding:9px 16px; border-radius:9px; border:1px solid var(--line); background:#fff; font-family:'Montserrat',sans-serif; font-weight:600; font-size:.8rem; color:var(--muted); cursor:pointer;}
+.tab-btn.active{background:var(--navy); color:#fff; border-color:var(--navy);}
+
+/* MOBILE BOTTOM NAV */
+.bottom-nav{display:none;}
+
+/* MOBILE OVERLAY — scoped because the public site defines a
+   different overlay colour and z-index for the same class name. */
+.page-portal .menu-overlay{position:fixed; inset:0; background:rgba(6,45,91,.45); opacity:0; pointer-events:none; transition:opacity .25s; z-index:39;}
+.page-portal .app-shell.menu-open .menu-overlay{opacity:1; pointer-events:auto;}
+
+
+/* ============================================================
+   6. RESPONSIVE
+   The two pages use different breakpoints and their selectors do
+   not overlap, so the blocks are kept separate.
+   ============================================================ */
+
+/* ---- Public site: 860px ---- */
+@media (max-width:860px){
+  .desktop-nav{display:none;}
+  .menu-btn{display:block;}
+  .hero-grid, .about-grid, .contact-grid, .admissions-grid{grid-template-columns:1fr;}
+  .track-grid, .news-grid{grid-template-columns:1fr;}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);}
+  .form-row{grid-template-columns:1fr;}
+  .hero-stats{grid-template-columns:repeat(3,1fr); gap:10px;}
+  .hero-visual{order:-1; padding:0 22px 44px 4px;}
+  /* The 2:1 hero photo crops far harder as the box approaches square,
+     so cap the height on narrow screens. */
+  .hero-art{min-height:300px;}
+  .float-attendance{left:2px;}
+  .float-event{right:6px;}
+  .page-public section{padding:56px 0;}
+  .utility-left{display:none;}
+  .utility-row{justify-content:flex-start; height:42px;}
+  .portal-links{overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; width:100%;}
+  .portal-links::-webkit-scrollbar{display:none;}
+  .feature-strip .container{grid-template-columns:repeat(2,1fr); padding:20px 0; gap:18px;}
+  .program-grid{grid-template-columns:repeat(2,1fr);}
+  .stats-banner .container{grid-template-columns:repeat(2,1fr); row-gap:22px;}
+  .footer-grid{grid-template-columns:1fr 1fr; gap:28px 20px;}
+  .admissions-photo{min-height:200px;}
+}
+
+/* ---- Public site: 560px ---- */
+@media (max-width:560px){
+  .nav-wrap{gap:14px;}
+  .btn-primary.nav-cta{padding:10px 14px; font-size:.82rem;}
+  .hero{padding:44px 0;}
+  .hero h1{max-width:none;}
+  .trust-row{gap:12px;}
+  .hero-stats{max-width:none; grid-template-columns:repeat(3,1fr); gap:8px;}
+  .hero-stats b{font-size:1.25rem;}
+  .float-card{padding:10px 12px; gap:8px;}
+  .float-card strong{font-size:.82rem;}
+  .float-card span{font-size:.68rem;}
+  .gallery-grid{grid-template-columns:1fr 1fr; gap:10px;}
+  .contact-grid{gap:32px;}
+  .page-public section{padding:44px 0;}
+  .section-heading{margin-bottom:28px;}
+  .feature-strip .container{grid-template-columns:1fr; padding:18px 0; gap:14px;}
+  .program-grid{grid-template-columns:1fr;}
+  .stats-banner .container{grid-template-columns:1fr 1fr; gap:18px; padding:26px 0;}
+  .footer-grid{grid-template-columns:1fr; text-align:left; gap:26px;}
+  .stat-row{gap:18px;}
+  .contact-info{gap:16px;}
+}
+
+/* ---- Public site: 380px ---- */
+@media (max-width:380px){
+  .container{width:min(1180px, 100% - 28px);}
+  .hero h1{font-size:1.85rem;}
+  .hero-stats{grid-template-columns:1fr 1fr 1fr;}
+  .gallery-grid{grid-template-columns:1fr;}
+  .stats-banner .container{grid-template-columns:1fr;}
+}
+
+/* ---- Teacher portal: 980px ---- */
+@media (max-width:980px){
+  .sidebar{transform:translateX(-100%); transition:transform .25s ease; box-shadow:10px 0 30px rgba(0,0,0,.15);}
+  .app-shell.menu-open .sidebar{transform:translateX(0);}
+  .main-area{margin-left:0;}
+  .mobile-toggle{display:grid;}
+  .kpi-grid{grid-template-columns:repeat(2,1fr);}
+  .quick-grid{grid-template-columns:repeat(3,1fr);}
+  .page-content{padding:18px 16px 90px;}
+  .bottom-nav{display:flex; position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:1px solid var(--line); padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px)); justify-content:space-around; z-index:40;}
+  .bn-item{display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:0; color:var(--muted); font-family:'Montserrat',sans-serif; font-weight:600; font-size:.68rem; padding:4px 8px; cursor:pointer;}
+  .bn-item.active{color:var(--green);}
+  .bn-icon{font-size:1.1rem;}
+  .topbar{padding:0 16px;}
+  /* clear the mobile bottom nav, which the public site does not have */
+  .page-portal .toast{bottom:96px;}
+}
+
+/* ---- Teacher portal: 640px ---- */
+@media (max-width:640px){
+  .kpi-grid, .quick-grid{grid-template-columns:repeat(2,1fr);}
+  .class-row{flex-wrap:wrap;}
+  .selectors-row select{flex:1;}
+  .table-wrap{overflow-x:auto;}
+  table{min-width:520px;}
+  .class-stats{gap:16px;}
+}
+
+
+/* ============================================================
+   7. PARENT PORTAL
+   ------------------------------------------------------------
+   Renders on <body class="page-portal page-parent">, so it
+   inherits the teacher portal's tokens and shell unchanged and
+   adds only parent-specific components. Every rule here is either
+   a parent-unique class name or `.page-parent`-scoped, so nothing
+   leaks back into the public site or the teacher portal.
+   ============================================================ */
+
+/* CHILD SELECTOR — cards are real buttons, hence the reset below */
+.child-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px;}
+.child-card{
+  display:flex; align-items:center; gap:12px; width:100%; text-align:left;
+  padding:14px; cursor:pointer; font:inherit; color:inherit;
+  background:var(--surface); border:2px solid var(--line); border-radius:14px;
+  box-shadow:var(--shadow); transition:border-color .15s, background .15s;
+}
+.child-card:hover{border-color:var(--green);}
+.child-card.selected{border-color:var(--green); background:var(--green-pale);}
+.avatar-lg{
+  width:52px; height:52px; border-radius:12px; flex-shrink:0;
+  background:var(--green-pale); color:var(--green-dark);
+  display:grid; place-items:center; font-weight:700; font-size:1rem;
+  font-family:'Poppins',sans-serif;
+}
+.child-card.selected .avatar-lg{background:var(--green); color:#fff;}
+.cc-body{min-width:0; flex:1;}
+.cc-name{display:block; font-weight:700; color:var(--navy); font-size:.92rem; font-family:'Poppins',sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.cc-form{display:block; font-size:.74rem; color:var(--muted); margin-top:2px;}
+.cc-action{display:block; font-size:.72rem; font-weight:700; color:var(--green-dark); margin-top:6px;}
+
+/* SELECTED CHILD HEADER */
+.child-head{display:flex; align-items:center; gap:14px; margin-bottom:18px; flex-wrap:wrap;}
+.child-head .ch-meta{flex:1; min-width:0;}
+.child-head h2{font-size:1.15rem;}
+.child-head p{font-size:.78rem; color:var(--muted); margin-top:3px;}
+
+/* Stat card sub-label ("+2% this term", "2 pending") */
+.page-parent .kpi-card .sub{display:block; font-size:.72rem; color:var(--muted); font-weight:600; margin-top:5px;}
+.page-parent .kpi-card .sub.warn{color:var(--amber);}
+
+/* HEADLINE METRIC — overall average / attendance percentage */
+.hero-metric{text-align:center; padding:6px 0 2px;}
+.hero-metric b{display:block; font-family:'Poppins',sans-serif; font-size:3rem; color:var(--navy); line-height:1.1;}
+.hero-metric span{font-size:.78rem; color:var(--muted); font-weight:600;}
+.trend-up{display:inline-block; margin-top:8px; font-size:.78rem; font-weight:700; color:var(--green-dark);}
+
+/* SUBJECT PERFORMANCE BARS */
+.perf-row{display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--line);}
+.perf-row:last-child{border-bottom:0;}
+.perf-name{width:120px; flex-shrink:0; font-size:.85rem; font-weight:600; color:var(--navy);}
+.perf-bar{flex:1; height:9px; border-radius:999px; background:var(--line); overflow:hidden;}
+.perf-fill{height:100%; border-radius:999px; background:linear-gradient(90deg,var(--green),var(--green-dark));}
+.perf-val{width:44px; flex-shrink:0; text-align:right; font-size:.85rem; font-weight:700; color:var(--navy);}
+
+/* ATTENDANCE MONTH GRID */
+.month-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-top:4px;}
+.dow{font-size:.64rem; font-weight:700; color:var(--muted); text-align:center; text-transform:uppercase; letter-spacing:.04em;}
+.day{
+  aspect-ratio:1; border-radius:7px; display:grid; place-items:center;
+  font-size:.72rem; font-weight:600; background:#fff; border:1px solid var(--line); color:var(--text);
+}
+.day.p{background:var(--green-pale); color:var(--green-dark); border-color:transparent;}
+.day.a{background:var(--red-pale); color:var(--red); border-color:transparent;}
+.day.l{background:var(--amber-pale); color:var(--amber); border-color:transparent;}
+.day.w{background:transparent; border-color:transparent; color:#bcc7cc;}
+
+/* FEES */
+.fee-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+.fee-tile{padding:14px; border:1px solid var(--line); border-radius:12px; background:#fff;}
+.fee-tile span{font-size:.72rem; color:var(--muted); font-weight:600;}
+.fee-tile b{display:block; font-family:'Poppins',sans-serif; font-size:1.02rem; color:var(--navy); margin-top:6px;}
+.fee-tile.due b{color:var(--red);}
+.meter{height:14px; border-radius:999px; background:var(--line); overflow:hidden; margin-top:14px;}
+.meter-fill{height:100%; border-radius:999px; background:linear-gradient(90deg,var(--green),var(--green-dark)); transition:width .4s ease;}
+.meter-cap{display:flex; justify-content:space-between; font-size:.74rem; font-weight:600; color:var(--muted); margin-top:8px;}
+.pay-row{display:flex; align-items:center; gap:12px; padding:13px 0; border-bottom:1px solid var(--line);}
+.pay-row:last-child{border-bottom:0;}
+.pay-date{width:92px; flex-shrink:0; font-size:.74rem; color:var(--muted);}
+.pay-label{flex:1; min-width:0; font-size:.88rem; font-weight:600; color:var(--navy);}
+.pay-amt{font-size:.88rem; font-weight:700; color:var(--navy); white-space:nowrap;}
+
+/* ANNOUNCEMENTS */
+.ann-item{display:flex; gap:12px; padding:15px 0; border-bottom:1px solid var(--line);}
+.ann-item:last-child{border-bottom:0;}
+.ann-dot{width:10px; height:10px; border-radius:50%; margin-top:6px; flex-shrink:0;}
+.ann-dot.blue{background:#2f7fd1;}
+.ann-dot.green{background:var(--green);}
+.ann-dot.orange{background:var(--amber);}
+.ann-item strong{display:block; font-size:.92rem; color:var(--navy); font-family:'Poppins',sans-serif;}
+.ann-item .ann-cat{font-size:.72rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;}
+.ann-item .ann-date{font-size:.72rem; color:var(--muted); margin-top:5px;}
+
+/* MESSAGES */
+/* Rows are real buttons, so the UA button box has to be reset away:
+   background/border would kill the row divider. */
+.msg-item{display:flex; align-items:flex-start; gap:12px; width:100%; padding:14px 0; background:none; border:0; border-bottom:1px solid var(--line); border-radius:0; text-align:left; color:inherit; cursor:pointer;}
+.msg-item:last-child{border-bottom:0;}
+.msg-item:hover .msg-from{color:var(--green-dark);}
+.msg-item:focus-visible{outline:2px solid var(--green); outline-offset:2px; border-radius:8px;}
+/* site.css:125 hands every .page-portal button the Montserrat action face
+   at (0,1,1), which outranks a bare .msg-item at (0,1,0) - so the Nunito
+   body face must be re-asserted at a specificity that wins, or the message
+   rows silently switch typefaces. */
+.page-parent .msg-item{font:inherit;}
+.msg-body{flex:1; min-width:0;}
+.msg-from{display:block; font-size:.88rem; font-weight:700; color:var(--navy);}
+.msg-text{display:block; font-size:.8rem; color:var(--muted); margin-top:3px;}
+.msg-time{font-size:.68rem; color:var(--muted); white-space:nowrap; flex-shrink:0; padding-top:3px;}
+
+/* MAKE PAYMENT MODAL */
+.modal{position:fixed; inset:0; z-index:120; display:none;}
+.modal.open{display:block;}
+.modal-backdrop{position:absolute; inset:0; background:rgba(6,45,91,.5);}
+.modal-card{
+  position:relative; background:#fff; border-radius:16px; padding:22px;
+  width:min(420px,92vw); margin:8vh auto 0; box-shadow:0 20px 50px rgba(6,45,91,.28);
+}
+.modal-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; gap:12px;}
+.modal-head h3{font-size:1.05rem;}
+.modal-close{width:32px; height:32px; flex-shrink:0; background:var(--bg); border:0; border-radius:8px; cursor:pointer; color:var(--navy); font-size:14px;}
+.field{display:grid; gap:6px; margin-bottom:16px;}
+/* Direct child only, so the nested .radio-row option labels keep their
+   own body-text styling instead of inheriting the field caption look. */
+.field > label{font-size:.74rem; font-weight:700; color:var(--navy); font-family:'Montserrat',sans-serif;}
+/* Excludes radios, which live inside .field but must not pick up the
+   full-width text-field box (that stretched them and pushed their
+   labels out of the row). */
+.page-parent .field input:not([type=radio]){
+  width:100%; height:42px; padding:0 12px; border:1px solid var(--line);
+  border-radius:9px; font:inherit; background:#fff; color:var(--text);
+}
+.radio-list{display:grid; gap:8px; margin-bottom:18px;}
+.radio-row{
+  display:flex; align-items:center; gap:10px; padding:12px 14px;
+  border:1px solid var(--line); border-radius:10px; cursor:pointer; font-size:.86rem; color:var(--text);
+}
+.radio-row.on{border-color:var(--green); background:var(--green-pale);}
+/* Page-scoped so it always outranks any .field input rule. */
+.page-parent .radio-row input{accent-color:var(--green); width:16px; height:16px; flex-shrink:0;}
+
+/* ---- More sheet (shared by both portals) ----
+   Reached only from the mobile bottom nav, but the styles are viewport
+   independent so the sheet behaves the same at any width. */
+.sheet{position:fixed; inset:0; z-index:130; display:none;}
+.sheet.open{display:block;}
+.sheet-backdrop{position:absolute; inset:0; background:rgba(6,45,91,.5);}
+.sheet-card{
+  position:absolute; left:0; right:0; bottom:0; background:#fff;
+  border-radius:18px 18px 0 0; padding:8px 18px calc(20px + env(safe-area-inset-bottom,0px));
+  box-shadow:0 -14px 40px rgba(6,45,91,.24); max-height:82vh; overflow-y:auto;
+}
+.sheet-grip{width:42px; height:4px; border-radius:999px; background:var(--line); margin:6px auto 14px;}
+.sheet-head{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:6px;}
+.sheet-head h3{font-size:1rem;}
+.sheet-item{
+  display:flex; align-items:center; gap:12px; width:100%; padding:14px 4px;
+  background:none; border:0; border-bottom:1px solid var(--line); text-align:left;
+  color:var(--text); cursor:pointer;
+}
+/* site.css:125 gives every .page-portal button the Montserrat action face
+   at (0,1,1), which outranks a bare .sheet-item at (0,1,0). Re-assert the
+   body face at a specificity that wins, same trap as .msg-item. */
+.page-portal .sheet-item{font:inherit;}
+.sheet-item:last-child{border-bottom:0;}
+.sheet-item:hover{color:var(--green-dark);}
+.sheet-item:focus-visible{outline:2px solid var(--green); outline-offset:2px; border-radius:8px;}
+.sheet-ico{width:34px; height:34px; flex-shrink:0; border-radius:9px; background:var(--green-pale); color:var(--green-dark); display:grid; place-items:center; font-size:.95rem;}
+.sheet-item-txt{flex:1; min-width:0; display:block;}
+.sheet-item-txt b{display:block; font-size:.9rem; color:var(--navy);}
+.sheet-item-txt span{display:block; font-size:.74rem; color:var(--muted); margin-top:2px;}
+
+/* ---- Parent portal: settings, threads, full record ---- */
+/* Back links are generic enough for both portals. Scoped to .page-portal
+   so the re-asserted body face outranks the (0,1,1) button rule - the
+   same trap as .sheet-item and .msg-item. */
+.page-portal .back-btn{
+  display:inline-flex; align-items:center; gap:7px; background:none; border:0;
+  padding:0; margin-bottom:12px; color:var(--muted); font:inherit; font-size:.8rem;
+  font-weight:700; cursor:pointer;
+}
+.back-btn:hover{color:var(--green-dark);}
+.back-btn:focus-visible{outline:2px solid var(--green); outline-offset:3px; border-radius:6px;}
+
+/* Notification switches. The control is a button with role="switch", so
+   Enter and Space come from the button itself rather than a keydown
+   handler, and aria-checked carries the state. */
+.switch-list{display:grid; gap:2px;}
+.switch-row{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:13px 0; border-bottom:1px solid var(--line);}
+.switch-row:last-child{border-bottom:0;}
+.switch-txt b{display:block; font-size:.88rem; color:var(--navy);}
+.switch-txt span{display:block; font-size:.74rem; color:var(--muted); margin-top:2px;}
+.switch{
+  position:relative; flex-shrink:0; width:44px; height:25px; padding:0;
+  border:0; border-radius:999px; background:#cdd8dd; cursor:pointer;
+  transition:background .18s ease;
+}
+.switch::after{
+  content:""; position:absolute; top:3px; left:3px; width:19px; height:19px;
+  border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.22);
+  transition:transform .18s ease;
+}
+.switch[aria-checked="true"]{background:var(--green);}
+.switch[aria-checked="true"]::after{transform:translateX(19px);}
+.switch:focus-visible{outline:2px solid var(--navy); outline-offset:2px;}
+
+.profile-list{display:grid; gap:0;}
+.prof-row{display:flex; justify-content:space-between; gap:14px; padding:11px 0; border-bottom:1px solid var(--line); font-size:.84rem;}
+.prof-row:last-child{border-bottom:0;}
+.prof-row span{color:var(--muted);}
+.prof-row b{color:var(--navy); font-weight:700; text-align:right;}
+
+/* Message thread, rendered inside the messages view when the route has a
+   third segment. */
+.thread-head{display:flex; align-items:center; gap:12px; padding-bottom:14px; border-bottom:1px solid var(--line); margin-bottom:4px;}
+.thread-head .msg-body strong{display:block; font-family:'Poppins',sans-serif; color:var(--navy); font-size:.98rem;}
+.thread-head .msg-body span{display:block; font-size:.74rem; color:var(--muted); margin-top:2px;}
+.thread-log{display:grid; gap:12px; padding:16px 0;}
+.bubble{
+  max-width:82%; padding:11px 14px; border-radius:14px; font-size:.85rem;
+  line-height:1.5; background:var(--bg); color:var(--text); border:1px solid var(--line);
+}
+.bubble.them{align-self:start; border-bottom-left-radius:4px;}
+.bubble.me{
+  align-self:end; background:var(--navy); color:#fff; border-color:var(--navy);
+  border-bottom-right-radius:4px; justify-self:end;
+}
+.bubble time{display:block; font-size:.66rem; margin-top:6px; opacity:.72;}
+.thread-reply{display:flex; gap:9px; border-top:1px solid var(--line); padding-top:14px;}
+.thread-reply input{flex:1; min-width:0; height:40px; padding:0 12px; border:1px solid var(--line); border-radius:9px; font:inherit; background:#fff; color:var(--text);}
+.thread-reply input:focus-visible{outline:2px solid var(--green); outline-offset:1px;}
+.thread-reply .btn{flex-shrink:0; white-space:nowrap;}
+
+/* Full attendance record table. */
+.rec-wrap{max-height:420px; overflow-y:auto;}
+.rec-table{width:100%; border-collapse:collapse; font-size:.82rem;}
+.rec-table th{
+  position:sticky; top:0; background:#fff; text-align:left; padding:9px 10px;
+  font-family:'Montserrat',sans-serif; font-size:.7rem; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.05em; border-bottom:1px solid var(--line);
+}
+.rec-table td{padding:10px; border-bottom:1px solid var(--line); color:var(--text);}
+.rec-table tr:last-child td{border-bottom:0;}
+.rec-table td.rec-day{color:var(--muted); width:78px;}
+.rec-table td.rec-dow{color:var(--muted); width:92px;}
+.tag{display:inline-block; padding:3px 10px; border-radius:999px; font-size:.7rem; font-weight:700;}
+.tag.p{background:var(--green-pale); color:var(--green-dark);}
+.tag.a{background:var(--red-pale); color:var(--red);}
+.tag.l{background:var(--amber-pale); color:var(--amber);}
+/* A school day with no status assigned yet - the record shows the gap
+   honestly instead of quietly counting it as present. */
+.tag.x{background:#EEF2F4; color:#6B7C88;}
+
+/* ---- Parent portal: 640px ---- */
+@media (max-width:640px){
+  .child-grid{grid-template-columns:1fr;}
+  .fee-grid{grid-template-columns:1fr;}
+  .perf-name{width:96px; font-size:.8rem;}
+  .month-grid{gap:4px;}
+  .day{font-size:.66rem; border-radius:6px;}
+  .pay-date{width:78px;}
+  .hero-metric b{font-size:2.4rem;}
+  .modal-card{margin:5vh auto 0; width:min(420px,94vw); padding:18px;}
+  .bubble{max-width:92%;}
+  .thread-reply{flex-wrap:wrap;}
+  .thread-reply input{flex:1 1 100%;}
+  .rec-table td.rec-dow{display:none;}
+}
+
+
+/* ============================================================
+   8. ADMIN PORTAL
+   Everything here is scoped to .page-admin. The admin portal reuses
+   the shared shell and the parent/teacher components unchanged, so
+   this block only carries what is genuinely new: staff cards, class
+   tiles, the fee totals row, the notice composer and a few small
+   pieces. Anything text-bearing overrides the Montserrat button font
+   that the shared .page-portal button rule imposes.
+   ============================================================ */
+
+.page-admin .adm-note{
+  margin-top:12px; font-size:.76rem; color:var(--muted); line-height:1.5;
+}
+
+/* Small neutral count badge, used on class tiles. */
+.page-admin .pill{
+  display:inline-block; padding:4px 12px; border-radius:999px;
+  background:var(--green-pale); color:var(--green-dark);
+  font-size:.72rem; font-weight:700; white-space:nowrap;
+}
+
+/* Compact button for table rows, where a full-size button would break
+   the row rhythm. */
+.page-admin .btn-sm{
+  padding:6px 14px; font-size:.72rem; font-family:'Montserrat',sans-serif;
+  border-radius:9px;
+}
+
+/* ---- Staff ---- */
+.page-admin .staff-grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr));
+  gap:14px; margin-bottom:8px;
+}
+.page-admin .staff-card{
+  display:grid; gap:10px; padding:18px; background:var(--surface);
+  border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow);
+}
+.page-admin .staff-top{ display:flex; align-items:center; gap:12px; }
+.page-admin .staff-top > div{ display:grid; gap:2px; min-width:0; }
+.page-admin .staff-name{
+  font-family:'Poppins',sans-serif; font-weight:700; font-size:.92rem;
+  color:var(--navy);
+}
+.page-admin .staff-role{ font-size:.76rem; color:var(--muted); }
+.page-admin .staff-load{
+  display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+  padding-top:10px; border-top:1px solid var(--line);
+  font-size:.78rem;
+}
+.page-admin .staff-load span{ color:var(--muted); }
+.page-admin .staff-load b{ color:var(--navy); font-weight:700; text-align:right; }
+
+/* ---- Classes ---- */
+.page-admin .class-grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(258px,1fr));
+  gap:14px; margin-bottom:8px;
+}
+.page-admin .class-tile{
+  display:grid; gap:14px; padding:18px; background:var(--surface);
+  border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow);
+}
+.page-admin .class-tile-top{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.page-admin .class-tile-top h3{
+  margin:0; font-family:'Poppins',sans-serif; font-size:1rem; color:var(--navy);
+}
+
+/* ---- Fee totals row ----
+   Sits under the balances table and lines up with its columns. */
+.page-admin .total-row{
+  display:grid; grid-template-columns:1.6fr repeat(4,1fr); gap:10px;
+  margin-top:14px; padding-top:13px; border-top:2px solid var(--line);
+}
+.page-admin .total-cell{
+  font-size:.8rem; font-weight:700; color:var(--navy);
+  font-family:'Montserrat',sans-serif;
+}
+.page-admin .total-cell.due{ color:var(--amber); }
+
+/* ---- Notice composer ---- */
+.page-admin .ann-compose{ margin-bottom:8px; }
+.page-admin .ann-compose .save-row{ margin-top:4px; }
+
+/* Text-bearing non-action controls re-assert the body font, because the
+   shared .page-portal button rule forces Montserrat on every button and
+   a form control is not a label. */
+.page-admin .ann-compose input,
+.page-admin .ann-compose select{ font-family:'Nunito',sans-serif; }
+
+@media (max-width:640px){
+  .page-admin .staff-grid,
+  .page-admin .class-grid{ grid-template-columns:1fr; }
+  .page-admin .total-row{ grid-template-columns:1fr 1fr; }
+  .page-admin .total-cell:first-child{ grid-column:1 / -1; }
+}
+
+
+/* ============================================================
+   9. STUDENT PORTAL
+   Everything here is scoped to .page-student. The student portal
+   reuses the shared shell and the parent components unchanged, so
+   this block only carries what is genuinely new: the account
+   picker, the sidebar sign-out control, the two-window attendance
+   comparison and the explanatory notes that stand in for data
+   this prototype does not have.
+
+   Anything text-bearing overrides the Montserrat button font that
+   the shared .page-portal button rule imposes, for the same reason
+   the admin and parent blocks do.
+   ============================================================ */
+
+/* ---- Parity with the parent page ----
+   These three rules are not cosmetic. Each parent rule is scoped to
+   .page-parent, so without an identical student-scoped copy the
+   student portal would silently render differently on the same
+   components: the KPI sub-labels would collapse inline, and the
+   message rows would switch to the Montserrat action face. */
+.page-student .kpi-card .sub{display:block; font-size:.72rem; color:var(--muted); font-weight:600; margin-top:5px;}
+.page-student .kpi-card .sub.warn{color:var(--amber);}
+/* site.css:125 hands every .page-portal button the Montserrat action
+   face at (0,1,1), which outranks a bare .msg-item at (0,1,0) - so the
+   Nunito body face must be re-asserted at a specificity that wins, or the
+   message rows silently switch typefaces. */
+.page-student .msg-item{font:inherit;}
+
+/* A down trend would otherwise be painted with the shared green
+   trend-up rule, so an improving and a slipping student would look
+   identical. The class is chosen from the arrow, not hard-coded. */
+.page-student .trend-down{color:var(--amber);}
+
+/* ---- Account picker ----
+   The first screen a visitor sees. It is a card grid rather than a
+   form because this build has no authentication: the students are
+   listed openly, and the note under the grid says so. */
+.page-student .pick-head{ margin-bottom:18px; }
+.page-student .pick-head h2{
+  margin:0; font-family:'Poppins',sans-serif; font-size:1.35rem; color:var(--navy);
+}
+.page-student .pick-head p{
+  margin:6px 0 0; color:var(--muted); font-size:.86rem;
+}
+.page-student .stu-grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(258px,1fr));
+  gap:14px;
+}
+/* A button, not a div: it is the primary control on this screen, so it
+   has to be reachable by keyboard and announce itself as a button. */
+.page-student .stu-card{
+  display:grid; gap:14px; padding:18px; text-align:left; cursor:pointer;
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:16px; box-shadow:var(--shadow); color:inherit;
+  font-family:inherit;
+}
+.page-student .stu-card:hover{ border-color:var(--green); }
+.page-student .stu-card:focus-visible{ outline:2px solid var(--green); outline-offset:2px; }
+/* The one selected account stays marked while the picker is visible, so
+   it is obvious who the portal is currently showing. */
+.page-student .stu-card.selected{ border-color:var(--green); background:var(--green-pale); }
+.page-student .stu-body{ display:grid; gap:3px; min-width:0; }
+.page-student .stu-name{
+  font-family:'Poppins',sans-serif; font-weight:700; font-size:.95rem; color:var(--navy);
+}
+.page-student .stu-form{ font-size:.74rem; color:var(--muted); }
+.page-student .stu-action{ margin-top:6px; font-size:.72rem; font-weight:700; color:var(--green-dark); }
+
+/* ---- Sign out ----
+   Sits below the sidebar identity block, as its own full-width
+   control. It is always rendered, including on the picker, so the
+   way out of a session is in the same place on every screen.
+   Scoped to .page-portal rather than .page-student so all four
+   portals share one sign-out control; the Student portal is the
+   only one with a login screen behind it. */
+.page-portal .logout{
+  display:flex; flex-direction:column; align-items:flex-start; gap:2px;
+  width:100%; margin-top:10px; padding:11px 12px; cursor:pointer;
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12);
+  border-radius:10px; color:#fff; text-align:left;
+  font-family:'Nunito',sans-serif; font-size:.8rem; font-weight:700;
+}
+.page-portal .logout span[aria-hidden]{ display:none; }
+.page-portal .logout .logout-sub{
+  font-size:.68rem; font-weight:600; color:#93a8bc;
+}
+.page-portal .logout:hover{ background:rgba(255,255,255,.1); }
+.page-portal .logout:focus-visible{ outline:2px solid #fff; outline-offset:2px; }
+
+/* ---- Two attendance windows ----
+   Term-to-date and the September register are different measurements
+   over different windows, so they sit side by side as two labelled
+   figures rather than one blended percentage. */
+.page-student .att-split{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:12px;
+}
+.page-student .att-split > div{
+  padding:14px; background:#fff; border:1px solid var(--line);
+  border-radius:12px; text-align:center;
+}
+.page-student .att-split-lab{
+  display:block; font-size:.72rem; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.04em;
+}
+.page-student .att-split b{
+  display:block; font-family:'Poppins',sans-serif; font-size:1.7rem;
+  color:var(--navy); margin-top:6px;
+}
+.page-student .att-split-sub{ display:block; font-size:.7rem; color:var(--muted); margin-top:4px; }
+
+/* ---- Explanatory notes ----
+   This build has no per-assignment briefs and no student-initiated
+   payments, so those screens state the limit instead of inventing
+   detail or offering an action the student cannot complete. */
+.page-student .att-note,
+.page-student .asg-note,
+.page-student .fee-note,
+.page-student .pick-note{
+  margin:12px 0 0; font-size:.76rem; color:var(--muted); line-height:1.5;
+}
+.page-student .pick-note{ margin-top:16px; }
+
+@media (max-width:640px){
+  .page-student .stu-grid{ grid-template-columns:1fr; }
+  .page-student .att-split{ grid-template-columns:1fr; }
+}

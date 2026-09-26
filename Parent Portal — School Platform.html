@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parent Portal — School Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body class="page-portal page-parent">
+<div class="app-shell" id="appShell">
+  <div class="menu-overlay" onclick="closeSide()"></div>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark"><img src="assets/img/logo.webp" alt=""></span>School Platform</div>
+    <nav class="side-nav">
+      <button class="nav-item active" data-view="dashboard" onclick="showView('dashboard',this)"><span class="nav-icon">⌂</span>Dashboard</button>
+      <button class="nav-item" data-view="children" onclick="showView('children',this)"><span class="nav-icon">👦</span>My Children</button>
+      <button class="nav-item" data-view="performance" onclick="showView('performance',this)"><span class="nav-icon">📊</span>Performance</button>
+      <button class="nav-item" data-view="attendance" onclick="showView('attendance',this)"><span class="nav-icon">◷</span>Attendance</button>
+      <button class="nav-item" data-view="fees" onclick="showView('fees',this)"><span class="nav-icon">💰</span>Fees</button>
+      <button class="nav-item" data-view="announcements" onclick="showView('announcements',this)"><span class="nav-icon">📢</span>Announcements</button>
+      <button class="nav-item" data-view="messages" onclick="showView('messages',this)"><span class="nav-icon">💬</span>Messages</button>
+      <button class="nav-item" data-view="settings" onclick="showView('settings',this)"><span class="nav-icon">⚙</span>Settings</button>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="avatar">AM</div>
+      <div><strong>Mrs. Michael</strong><span>Parent · 2 children</span></div>
+    </div>
+    <button class="logout" id="logoutBtn" onclick="logout()"><span aria-hidden="true">⏻</span>Log out<span class="logout-sub">Back to the main site</span></button>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <button class="icon-btn mobile-toggle" onclick="openSide()" aria-label="Open menu">☰</button>
+      <div>
+        <div class="eyebrow" id="topEyebrow">Friday, 25 September 2026</div>
+        <h1 id="topTitle">Good morning, Mrs. Michael 👋</h1>
+      </div>
+      <div class="topbar-spacer"></div>
+      <button class="icon-btn" onclick="showToast('No new notifications.')" aria-label="Notifications">🔔<b>3</b></button>
+      <div class="avatar">AM</div>
+    </header>
+
+    <section class="page-content">
+
+      <!-- DASHBOARD -->
+      <div class="view active" id="view-dashboard">
+        <p style="color:var(--muted); margin-bottom:20px;">Here's an overview of your children's progress.</p>
+
+        <div class="section-title">MY CHILDREN</div>
+        <div class="child-grid" id="childGrid"></div>
+
+        <div class="panel card" style="margin-top:16px;">
+          <div class="child-head">
+            <div class="avatar-lg" id="chAvatar">DJ</div>
+            <div class="ch-meta">
+              <h2 id="chName">Daniel Joseph</h2>
+              <p id="chMeta">Form 2A · Student ID: STU-000345</p>
+            </div>
+            <button class="btn btn-outline" onclick="showView('performance')">View Performance</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid" style="margin-top:16px;">
+          <div class="kpi-card card"><span class="label">Attendance</span><strong id="kAtt">94%</strong><span class="sub" id="kAttSub">+2% this term</span></div>
+          <div class="kpi-card card"><span class="label">Average</span><strong id="kAvg">78%</strong><span class="sub" id="kAvgSub">This term</span></div>
+          <div class="kpi-card card"><span class="label">Assignments</span><strong id="kAsg">3</strong><span class="sub" id="kAsgSub">2 pending</span></div>
+          <div class="kpi-card card"><span class="label">Fees</span><strong id="kFees">67%</strong><span class="sub" id="kFeesSub">TZS 400,000 due</span></div>
+        </div>
+
+        <div class="section-title">ACADEMIC PERFORMANCE</div>
+        <div class="panel card">
+          <div id="perfList"></div>
+        </div>
+
+        <div class="section-title">ATTENDANCE</div>
+        <div class="panel card">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;">
+            <strong id="attMonth" style="font-family:'Poppins',sans-serif;color:var(--navy);">September 2026</strong>
+            <span style="font-size:.76rem;color:var(--muted);font-weight:600;">Last 30 days</span>
+          </div>
+          <div class="attendance-summary">
+            <div><strong id="attPresent">18</strong><span>Present</span></div>
+            <div><strong id="attAbsent">1</strong><span>Absent</span></div>
+            <div><strong id="attLate">2</strong><span>Late</span></div>
+          </div>
+          <div class="hero-metric" style="padding-top:14px;">
+            <b id="attPct">94%</b>
+            <span>Attendance rate</span>
+          </div>
+          <div class="save-row">
+            <button class="btn btn-outline" onclick="showView('attendance')">View Attendance</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY CHILDREN -->
+      <div class="view" id="view-children">
+        <h2 style="margin-bottom:4px;">My Children</h2>
+        <p style="color:var(--muted); margin-bottom:18px;">Select a child to focus the dashboard on them.</p>
+        <div class="child-grid" id="childGridFull"></div>
+
+        <div class="section-title">SELECTED CHILD</div>
+        <div class="panel card">
+          <div class="kpi-grid" style="margin-bottom:0;">
+            <div class="kpi-card card"><span class="label">Attendance</span><strong id="cAtt">94%</strong><span class="sub" id="cAttSub">This term</span></div>
+            <div class="kpi-card card"><span class="label">Average</span><strong id="cAvg">78%</strong><span class="sub">This term</span></div>
+            <div class="kpi-card card"><span class="label">Assignments</span><strong id="cAsg">3</strong><span class="sub" id="cAsgSub">2 pending</span></div>
+            <div class="kpi-card card"><span class="label">Fees Paid</span><strong id="cFees">67%</strong><span class="sub" id="cFeesSub">TZS 400,000 due</span></div>
+          </div>
+          <div class="save-row">
+            <button class="btn btn-primary" onclick="showView('dashboard')">Open Dashboard</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PERFORMANCE -->
+      <div class="view" id="view-performance">
+        <h2 style="margin-bottom:4px;">Academic Performance</h2>
+        <p style="color:var(--muted); margin-bottom:18px;" id="perfWho">Daniel Joseph · Form 2A</p>
+
+        <div class="panel card">
+          <div class="hero-metric">
+            <b id="overallAvg">78%</b>
+            <span>Overall Average</span>
+            <span class="trend-up" id="overallTrend">↑ 4.2% this term</span>
+          </div>
+        </div>
+
+        <div class="section-title">SUBJECT PERFORMANCE</div>
+        <div class="panel card">
+          <div id="perfBars"></div>
+          <p style="font-size:.74rem;color:var(--muted);margin-top:14px;padding-top:12px;border-top:1px solid var(--line);" id="subjectNote">Showing 5 of 10 subjects</p>
+        </div>
+
+        <div class="section-title">EXAM BREAKDOWN</div>
+        <div class="panel card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Subject</th><th>CAT 1</th><th>CAT 2</th><th>Exam</th><th>Average</th><th>Grade</th></tr></thead>
+              <tbody id="examRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="view" id="view-attendance">
+        <h2 style="margin-bottom:4px;">Attendance</h2>
+        <p style="color:var(--muted); margin-bottom:18px;" id="attWho">Daniel Joseph · Form 2A</p>
+
+        <div class="panel card">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;">
+            <strong style="font-family:'Poppins',sans-serif;color:var(--navy);" id="attMonth2">September 2026</strong>
+            <span style="font-size:.76rem;color:var(--muted);font-weight:600;">Academic Year 2026</span>
+          </div>
+          <div class="hero-metric" style="padding:14px 0 4px;">
+            <b id="attPct2">94%</b>
+            <span>Attendance rate</span>
+          </div>
+          <div class="attendance-summary" style="border-top:0;padding-top:6px;margin-top:0;">
+            <div><strong id="attPresent2">18</strong><span>Present</span></div>
+            <div><strong id="attAbsent2">1</strong><span>Absent</span></div>
+            <div><strong id="attLate2">2</strong><span>Late</span></div>
+          </div>
+        </div>
+
+        <div class="section-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>DAILY RECORD</span>
+          <span style="font-weight:600;letter-spacing:0;text-transform:none;">September 2026</span>
+        </div>
+        <div class="panel card">
+          <div class="month-grid" id="monthGrid"></div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;font-size:.74rem;font-weight:600;color:var(--muted);">
+            <span><span class="day p" style="display:inline-grid;width:16px;height:16px;aspect-ratio:auto;vertical-align:-4px;margin-right:5px;border-radius:4px;"></span>Present</span>
+            <span><span class="day a" style="display:inline-grid;width:16px;height:16px;aspect-ratio:auto;vertical-align:-4px;margin-right:5px;border-radius:4px;"></span>Absent</span>
+            <span><span class="day l" style="display:inline-grid;width:16px;height:16px;aspect-ratio:auto;vertical-align:-4px;margin-right:5px;border-radius:4px;"></span>Late</span>
+          </div>
+          <div class="save-row">
+            <button class="btn btn-outline" onclick="showView('record')">View Full Record</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEES -->
+      <div class="view" id="view-fees">
+        <h2 style="margin-bottom:4px;">Fees</h2>
+        <p style="color:var(--muted); margin-bottom:18px;" id="feeWho">Daniel Joseph · Academic Year 2026</p>
+
+        <div class="section-title">FEES SUMMARY</div>
+        <div class="panel card">
+          <div class="fee-grid">
+            <div class="fee-tile"><span>Total Required</span><b id="feeTotal">TZS 1,200,000</b></div>
+            <div class="fee-tile"><span>Paid</span><b id="feePaid">TZS 800,000</b></div>
+            <div class="fee-tile due"><span>Outstanding</span><b id="feeDue">TZS 400,000</b></div>
+          </div>
+          <div class="meter"><div class="meter-fill" id="feeMeter" style="width:67%;"></div></div>
+          <div class="meter-cap"><span id="feeCapL">TZS 800,000 paid</span><span id="feeCapR">67% Paid</span></div>
+        </div>
+
+        <div class="section-title">PAYMENT HISTORY</div>
+        <div class="panel card">
+          <div id="feeHistory"></div>
+        </div>
+
+        <div class="save-row" id="feeCtaRow">
+          <button class="btn btn-primary" onclick="openPay()">Make Payment</button>
+        </div>
+      </div>
+
+      <!-- ANNOUNCEMENTS -->
+      <div class="view" id="view-announcements">
+        <h2 style="margin-bottom:4px;">Announcements</h2>
+        <p style="color:var(--muted); margin-bottom:18px;">Notices from the school, academic team and finance office.</p>
+        <div class="panel card">
+          <div class="ann-item">
+            <span class="ann-dot blue"></span>
+            <div>
+              <div class="ann-cat">School Announcement</div>
+              <strong>Annual Sports Day</strong>
+              <div class="ann-date">25 Sept 2026</div>
+            </div>
+          </div>
+          <div class="ann-item">
+            <span class="ann-dot green"></span>
+            <div>
+              <div class="ann-cat">Academic</div>
+              <strong>Mathematics results published</strong>
+              <div class="ann-date">24 Sept 2026</div>
+            </div>
+          </div>
+          <div class="ann-item">
+            <span class="ann-dot orange"></span>
+            <div>
+              <div class="ann-cat">Finance</div>
+              <strong>Fee balance reminder</strong>
+              <div class="ann-date">22 Sept 2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="view" id="view-messages">
+        <div id="msgListPane">
+          <h2 style="margin-bottom:4px;">Messages</h2>
+          <p style="color:var(--muted); margin-bottom:18px;" id="msgWho">Conversations with the school about Daniel Joseph.</p>
+          <div class="panel card" id="msgListPanel"></div>
+        </div>
+        <div id="msgThreadPane" hidden>
+          <button type="button" class="back-btn" onclick="closeThread()">&#8592; Back to messages</button>
+          <div class="panel card">
+            <div class="thread-head" id="threadHead"></div>
+            <div class="thread-log" id="threadLog"></div>
+            <div class="thread-reply">
+              <input id="replyInput" type="text" placeholder="Write a reply&hellip;" aria-label="Write a reply" onkeydown="if(event.key==='Enter')sendReply()">
+              <button class="btn btn-primary" onclick="sendReply()">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FULL ATTENDANCE RECORD -->
+      <div class="view" id="view-record">
+        <button type="button" class="back-btn" onclick="showView('attendance')">&#8592; Back to attendance</button>
+        <h2 style="margin-bottom:4px;">Full Attendance Record</h2>
+        <p style="color:var(--muted); margin-bottom:18px;" id="recWho">Daniel Joseph &middot; September 2026</p>
+
+        <div class="panel card">
+          <div class="attendance-summary" style="border-top:0;padding-top:0;margin-top:0;">
+            <div><strong id="recPresent">18</strong><span>Present</span></div>
+            <div><strong id="recAbsent">1</strong><span>Absent</span></div>
+            <div><strong id="recLate">2</strong><span>Late</span></div>
+          </div>
+          <div class="hero-metric" style="padding-top:14px;">
+            <b id="recPct">94%</b>
+            <span>Attendance rate</span>
+          </div>
+        </div>
+
+        <div class="section-title">DAILY DETAIL</div>
+        <div class="panel card">
+          <div class="rec-wrap">
+            <table class="rec-table">
+              <thead><tr><th>Date</th><th>Day</th><th>Status</th></tr></thead>
+              <tbody id="recRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="view" id="view-settings">
+        <h2 style="margin-bottom:4px;">Settings</h2>
+        <p style="color:var(--muted); margin-bottom:18px;">Notification preferences for each child.</p>
+
+        <div class="section-title">NOTIFICATIONS</div>
+        <div class="panel card">
+          <div class="switch-list" id="switchList"></div>
+        </div>
+
+        <div class="section-title">PROFILE</div>
+        <div class="panel card">
+          <div class="profile-list" id="profileList"></div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="bn-item active" data-view="dashboard" onclick="showView('dashboard',this,true)"><span class="bn-icon">⌂</span>Home</button>
+    <button class="bn-item" data-view="children" onclick="showView('children',this,true)"><span class="bn-icon">👦</span>Child</button>
+    <button class="bn-item" data-view="fees" onclick="showView('fees',this,true)"><span class="bn-icon">💰</span>Fees</button>
+    <button class="bn-item" data-more onclick="openMore()"><span class="bn-icon">⋯</span>More</button>
+  </nav>
+</div>
+
+<div class="sheet" id="moreSheet" role="dialog" aria-modal="true" aria-labelledby="moreTitle" aria-hidden="true">
+  <div class="sheet-backdrop" onclick="closeMore()"></div>
+  <div class="sheet-card">
+    <div class="sheet-grip"></div>
+    <div class="sheet-head">
+      <h3 id="moreTitle">More</h3>
+      <button class="modal-close" onclick="closeMore()" aria-label="Close menu">✕</button>
+    </div>
+    <div id="moreItems"></div>
+  </div>
+</div>
+
+<div class="modal" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle" aria-hidden="true">
+  <div class="modal-backdrop" onclick="closePay()"></div>
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="payTitle">Make Payment</h3>
+      <button class="modal-close" onclick="closePay()" aria-label="Close payment dialog">✕</button>
+    </div>
+    <div class="field">
+      <label for="payAmount">Amount</label>
+      <input id="payAmount" type="text" value="TZS 400,000">
+    </div>
+    <div class="field">
+      <label>Payment Method</label>
+      <div class="radio-list">
+        <label class="radio-row on"><input type="radio" name="payMethod" value="M-Pesa" checked onchange="pickMethod(this)">M-Pesa</label>
+        <label class="radio-row"><input type="radio" name="payMethod" value="Airtel Money" onchange="pickMethod(this)">Airtel Money</label>
+        <label class="radio-row"><input type="radio" name="payMethod" value="Tigo Pesa" onchange="pickMethod(this)">Tigo Pesa</label>
+        <label class="radio-row"><input type="radio" name="payMethod" value="Bank" onchange="pickMethod(this)">Bank</label>
+      </div>
+    </div>
+    <div class="save-row">
+      <button class="btn btn-primary" onclick="submitPayment()">Continue Payment</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* Prototype data. The parent has two children, so every figure below
+     is per-child and the whole portal re-renders on selection. */
+  const CHILDREN = {
+    daniel: {
+      name:'Daniel Joseph', form:'Form 2A', id:'STU-000345', initials:'DJ',
+      attendance:94, attSub:'+2% this term',
+      average:78, avgSub:'This term',
+      assignments:3, asgSub:'2 pending',
+      trend:'↑ 4.2% this term',
+      subjectNote:'Showing 5 of 10 subjects',
+      attMonth:'September 2026',
+      /* Statuses are derived from the counts below, never hand-written,
+         so the calendar can never disagree with the summary above it. */
+      attPresent:18, attAbsent:1, attLate:2, attPct:94,
+      subjects:[
+        {name:'Mathematics', mark:82, cat1:80, cat2:84, exam:82},
+        {name:'Biology',     mark:81, cat1:80, cat2:82, exam:81},
+        {name:'English',     mark:76, cat1:74, cat2:78, exam:76},
+        {name:'Physics',     mark:73, cat1:71, cat2:75, exam:73},
+        {name:'Chemistry',   mark:68, cat1:66, cat2:70, exam:68}
+      ],
+      fees:{
+        year:'Academic Year 2026', total:1200000, paid:800000, due:400000,
+        history:[
+          {date:'25 Sept 2026', label:'School Fees', amount:400000},
+          {date:'03 Aug 2026',  label:'School Fees', amount:400000}
+        ]
+      }
+    },
+    sarah: {
+      name:'Sarah Michael', form:'Form 5B', id:'STU-000512', initials:'SM',
+      attendance:89, attSub:'-1% this term',
+      average:74, avgSub:'This term',
+      assignments:5, asgSub:'1 pending',
+      trend:'↑ 2.1% this term',
+      subjectNote:'Showing 5 of 10 subjects',
+      attMonth:'September 2026',
+      attPresent:16, attAbsent:2, attLate:2, attPct:89,
+      subjects:[
+        {name:'Biology',     mark:81, cat1:80, cat2:82, exam:81},
+        {name:'English',     mark:76, cat1:74, cat2:78, exam:76},
+        {name:'Mathematics', mark:72, cat1:70, cat2:73, exam:73},
+        {name:'Civics',      mark:71, cat1:69, cat2:73, exam:71},
+        {name:'History',     mark:68, cat1:66, cat2:70, exam:68}
+      ],
+      fees:{
+        year:'Academic Year 2026', total:1500000, paid:1500000, due:0,
+        history:[
+          {date:'12 Sept 2026', label:'School Fees', amount:500000},
+          {date:'05 Aug 2026',  label:'School Fees', amount:500000},
+          {date:'14 Jul 2026',  label:'School Fees', amount:500000}
+        ]
+      }
+    }
+  };
+
+  let activeChild = 'daniel';
+  /* Separate from activeChild on purpose: activeChild already reads
+     'daniel' before anything renders, so comparing against it alone
+     would skip the very first render and leave the child cards empty. */
+  let childRendered = false;
+  let payTrigger = null;
+  let moreTrigger = null;
+  let openThreadId = '';
+
+  /* The three tabs that live directly on the mobile bottom nav. Anything
+     else is reached through More, so More is the tab that highlights. */
+  const PRIMARY_VIEWS = ['dashboard','children','fees'];
+
+  /* Conversations with staff. {child} is substituted at render time from
+     the selected child, so a thread never names the wrong sibling. */
+  const THREADS = {
+    'thread-1': {
+      from:'School Administration', initials:'SA', time:'2h',
+      topic:'Revised reporting day schedule',
+      preview:'Dear parents, please note the revised reporting day schedule…',
+      body:[
+        {them:true, text:'Dear parents, please note the revised reporting day schedule. Reports for {child} will now be issued on Friday 2 October 2026 rather than Wednesday 30 September.', time:'09:14'},
+        {them:true, text:'The change applies to all forms. Please collect printed copies before the end of the week; the portal copy stays available afterwards.', time:'09:15'}
+      ]
+    },
+    'thread-2': {
+      from:'Mathematics Teacher', initials:'MT', time:'1d',
+      topic:'Assignment submitted ahead of schedule',
+      preview:'{child} has submitted the quadratic equations assignment ahead of…',
+      body:[
+        {them:true, text:'{child} has submitted the quadratic equations assignment ahead of the deadline. The working shown is accurate throughout.', time:'Yesterday, 14:02'},
+        {them:true, text:'I have marked it and returned feedback. {child} may want to attempt the extension questions before Friday.', time:'Yesterday, 16:40'},
+        {them:false, text:'Thank you, I will go through the extension questions with {child} tonight.', time:'Yesterday, 18:05'}
+      ]
+    },
+    'thread-3': {
+      from:'Class Teacher', initials:'CT', time:'3d',
+      topic:'Class schedule moved to Room 12',
+      preview:'Tomorrow’s class schedule has been moved to Room 12 due to the…',
+      body:[
+        {them:true, text:'Tomorrow’s schedule has been moved to Room 12 due to the science practical. {child} should report to the east block at the usual time.', time:'3 days ago, 11:20'},
+        {them:true, text:'Lab coats are required for the afternoon double period.', time:'3 days ago, 11:22'}
+      ]
+    }
+  };
+
+  /* Replies are held in memory only - there is no backend, so they are
+     intentionally lost on refresh rather than pretended to be saved. */
+  const REPLIES = { 'thread-1':[], 'thread-2':[], 'thread-3':[] };
+
+  /* Notification preferences, per child, also in memory for the same
+     reason. The defaults differ per child so the panel is obviously
+     derived from the selection rather than a fixed block of switches. */
+  const NOTIFY = {
+    daniel:{ attendance:true,  fees:true,  results:true,  messages:false },
+    sarah: { attendance:true,  fees:false, results:true,  messages:true  }
+  };
+  const NOTIFY_LABELS = {
+    attendance:{ t:'Attendance reminders', s:'Daily attendance summary each morning' },
+    fees:      { t:'Fee reminders',         s:'Outstanding balance and due dates' },
+    results:   { t:'Results and reports',   s:'New marks, grades and exam results' },
+    messages:  { t:'Messages from staff',   s:'Replies to anything you send' }
+  };
+
+  const MORE_ITEMS = [
+    { view:'performance',   ico:'📊', title:'Performance',   sub:'Subject marks and exam breakdown' },
+    { view:'attendance',    ico:'◷', title:'Attendance',    sub:'Monthly calendar and full record' },
+    { view:'announcements', ico:'📢', title:'Announcements', sub:'Notices from the school' },
+    { view:'messages',      ico:'💬', title:'Messages',      sub:'Conversations with staff' },
+    { view:'settings',      ico:'⚙', title:'Settings',      sub:'Notification preferences' }
+  ];
+
+  function gradeFor(mark){
+    if(mark>=90) return 'A+';
+    if(mark>=80) return 'A';
+    if(mark>=75) return 'B+';
+    if(mark>=65) return 'B';
+    if(mark>=50) return 'C';
+    return 'F';
+  }
+  function tzs(n){ return 'TZS ' + n.toLocaleString('en-US'); }
+  function setText(id, val){ const el=document.getElementById(id); if(el) el.textContent=val; }
+
+  /* Fees percentage is always derived, so the dashboard card and the
+     fees meter can never show two different numbers. */
+  function paidPct(c){ return c.fees.total ? Math.round(c.fees.paid / c.fees.total * 100) : 0; }
+  function feeSub(c){ return c.fees.due > 0 ? tzs(c.fees.due) + ' due' : 'Fully paid'; }
+
+  /* Builds the per-school-day status string from the summary counts, so
+     the grid is always generated from the same numbers it displays. */
+  function statusPattern(present, late, absent){
+    return 'p'.repeat(present) + 'l'.repeat(late) + 'a'.repeat(absent);
+  }
+
+  /* Distributes status letters across September 2026's weekdays, so the
+     grid can never disagree with the summary counts above it. */
+  function buildMonth(statuses){
+    const marks = {};
+    let i = 0;
+    for(let d=1; d<=30; d++){
+      const dow = new Date(2026, 8, d).getDay();
+      if(dow===0 || dow===6) continue;
+      if(i < statuses.length) marks[d] = statuses[i++];
+    }
+    let html = '';
+    ['S','M','T','W','T','F','S'].forEach(function(d){
+      html += '<div class="dow">' + d + '</div>';
+    });
+    const first = new Date(2026, 8, 1).getDay();
+    for(let k=0; k<first; k++) html += '<div class="day w"></div>';
+    for(let d=1; d<=30; d++){
+      const dow = new Date(2026, 8, d).getDay();
+      const weekend = (dow===0 || dow===6);
+      const st = weekend ? 'w' : (marks[d] || '');
+      html += '<div class="day' + (st ? ' ' + st : '') + '">' + (weekend ? '' : d) + '</div>';
+    }
+    return html;
+  }
+
+  function childCard(key, full){
+    const c = CHILDREN[key];
+    const on = key === activeChild;
+    return '<button class="child-card' + (on ? ' selected' : '') + '" data-child="' + key + '"' +
+             ' aria-pressed="' + on + '" onclick="selectChild(\'' + key + '\')">' +
+             '<span class="avatar-lg">' + c.initials + '</span>' +
+             '<span class="cc-body">' +
+               '<span class="cc-name">' + c.name + '</span>' +
+               '<span class="cc-form">' + c.form + '</span>' +
+               '<span class="cc-action">' + (on ? '● Selected' : 'View profile →') + '</span>' +
+             '</span>' +
+           '</button>';
+  }
+
+  function renderChildCards(){
+    document.getElementById('childGrid').innerHTML =
+      Object.keys(CHILDREN).map(function(k){ return childCard(k); }).join('');
+    document.getElementById('childGridFull').innerHTML =
+      Object.keys(CHILDREN).map(function(k){ return childCard(k); }).join('');
+  }
+
+  function renderChild(key){
+    const c = CHILDREN[key];
+    activeChild = key;
+
+    renderChildCards();
+
+    /* dashboard + children header */
+    setText('chAvatar', c.initials);
+    setText('chName', c.name);
+    setText('chMeta', c.form + ' · Student ID: ' + c.id);
+    setText('perfWho', c.name + ' · ' + c.form);
+    setText('attWho', c.name + ' · ' + c.form);
+    setText('feeWho', c.name + ' · ' + c.fees.year);
+
+    /* stat cards */
+    setText('kAtt', c.attendance + '%');
+    setText('kAttSub', c.attSub);
+    setText('kAvg', c.average + '%');
+    setText('kAvgSub', c.avgSub);
+    setText('kAsg', c.assignments);
+    setText('kAsgSub', c.asgSub);
+    setText('kFees', paidPct(c) + '%');
+    setText('kFeesSub', feeSub(c));
+    setText('cAtt', c.attendance + '%');
+    setText('cAttSub', c.attSub);
+    setText('cAvg', c.average + '%');
+    setText('cAsg', c.assignments);
+    setText('cAsgSub', c.asgSub);
+    setText('cFees', paidPct(c) + '%');
+    setText('cFeesSub', feeSub(c));
+
+    /* condensed subject list on the dashboard — top four subjects */
+    document.getElementById('perfList').innerHTML = c.subjects.slice(0, 4).map(function(s){
+      return '<div class="perf-row">' +
+               '<span class="perf-name">' + s.name + '</span>' +
+               '<span class="perf-bar"><span class="perf-fill" style="display:block;width:' + s.mark + '%"></span></span>' +
+               '<span class="perf-val">' + s.mark + '%</span>' +
+               '<span class="grade-pill">' + gradeFor(s.mark) + '</span>' +
+             '</div>';
+    }).join('');
+
+    /* performance view */
+    setText('overallAvg', c.average + '%');
+    setText('overallTrend', c.trend);
+    setText('subjectNote', c.subjectNote + ' · overall average covers all subjects');
+    document.getElementById('perfBars').innerHTML = c.subjects.map(function(s){
+      return '<div class="perf-row">' +
+               '<span class="perf-name">' + s.name + '</span>' +
+               '<span class="perf-bar"><span class="perf-fill" style="display:block;width:' + s.mark + '%"></span></span>' +
+               '<span class="perf-val">' + s.mark + '%</span>' +
+               '<span class="grade-pill">' + gradeFor(s.mark) + '</span>' +
+             '</div>';
+    }).join('');
+    document.getElementById('examRows').innerHTML = c.subjects.map(function(s, i){
+      return '<tr><td>' + (i+1 < 10 ? '0' : '') + (i+1) + '</td><td style="font-weight:600;color:var(--navy);">' + s.name + '</td>' +
+             '<td>' + s.cat1 + '</td><td>' + s.cat2 + '</td><td>' + s.exam + '</td>' +
+             '<td style="font-weight:700;color:var(--navy);">' + s.mark + '%</td>' +
+             '<td><span class="grade-pill">' + gradeFor(s.mark) + '</span></td></tr>';
+    }).join('');
+
+    /* attendance */
+    setText('attMonth', c.attMonth);
+    setText('attMonth2', c.attMonth);
+    setText('attPresent', c.attPresent);
+    setText('attAbsent', c.attAbsent);
+    setText('attLate', c.attLate);
+    setText('attPct', c.attPct + '%');
+    setText('attPresent2', c.attPresent);
+    setText('attAbsent2', c.attAbsent);
+    setText('attLate2', c.attLate);
+    setText('attPct2', c.attPct + '%');
+    document.getElementById('monthGrid').innerHTML = buildMonth(statusPattern(c.attPresent, c.attLate, c.attAbsent));
+
+    /* fees */
+    const f = c.fees;
+    const pct = paidPct(c);
+    setText('feeTotal', tzs(f.total));
+    setText('feePaid', tzs(f.paid));
+    setText('feeDue', tzs(f.due));
+    document.getElementById('feeMeter').style.width = pct + '%';
+    setText('feeCapL', tzs(f.paid) + ' paid');
+    setText('feeCapR', pct + '% Paid');
+    document.getElementById('feeHistory').innerHTML = f.history.map(function(h){
+      return '<div class="pay-row">' +
+               '<span class="pay-date">' + h.date + '</span>' +
+               '<span class="pay-label">' + h.label + '</span>' +
+               '<span class="pay-amt">' + tzs(h.amount) + '</span>' +
+               '<span class="grade-pill">✓ Paid</span>' +
+             '</div>';
+    }).join('');
+
+    /* no balance outstanding → swap the CTA for a settled note */
+    const cta = document.getElementById('feeCtaRow');
+    if(f.due > 0){
+      cta.innerHTML = '<button class="btn btn-primary" onclick="openPay()">Make Payment</button>';
+    } else {
+      cta.innerHTML = '<span class="grade-pill" style="font-size:.82rem;padding:8px 16px;">✓ Fees fully paid for ' + f.year + '</span>';
+    }
+    document.getElementById('payAmount').value = tzs(f.due);
+  }
+
+  /* ---- Full attendance record ----
+     Built from the same statusPattern() the month grid consumes, so the
+     detailed rows and the summary above them cannot drift apart. A school
+     day with no letter left over is reported as "Not marked" rather than
+     being counted as present, which is what makes the row count honest. */
+  function recordRows(c){
+    const statuses = statusPattern(c.attPresent, c.attLate, c.attAbsent);
+    const dows = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const rows = [];
+    let i = 0;
+    for(let d=1; d<=30; d++){
+      const dow = new Date(2026, 8, d).getDay();
+      if(dow === 0 || dow === 6) continue;
+      rows.push({ day:d, dow:dows[dow], st:(i < statuses.length ? statuses[i++] : '') });
+    }
+    return rows;
+  }
+  function renderRecord(){
+    const c = CHILDREN[activeChild];
+    setText('recWho', c.name + ' · ' + c.attMonth);
+    setText('recPresent', c.attPresent);
+    setText('recAbsent', c.attAbsent);
+    setText('recLate', c.attLate);
+    setText('recPct', c.attPct + '%');
+    document.getElementById('recRows').innerHTML = recordRows(c).map(function(r){
+      const label = r.st === 'p' ? 'Present' : r.st === 'a' ? 'Absent' : r.st === 'l' ? 'Late' : 'Not marked';
+      return '<tr>' +
+               '<td class="rec-day">' + (r.day < 10 ? '0' : '') + r.day + ' Sep</td>' +
+               '<td class="rec-dow">' + r.dow + '</td>' +
+               '<td><span class="tag ' + (r.st || 'x') + '">' + label + '</span></td>' +
+             '</tr>';
+    }).join('');
+  }
+
+  /* ---- Settings ---- */
+  function renderSettings(){
+    const c = CHILDREN[activeChild];
+    const prefs = NOTIFY[activeChild];
+    document.getElementById('switchList').innerHTML = Object.keys(NOTIFY_LABELS).map(function(key){
+      const lab = NOTIFY_LABELS[key];
+      const on = prefs[key];
+      const lid = 'sw-' + key;
+      return '<div class="switch-row">' +
+               '<span class="switch-txt" id="' + lid + '"><b>' + lab.t + '</b><span>' + lab.s + '</span></span>' +
+               '<button type="button" class="switch" role="switch" aria-checked="' + on + '"' +
+                 ' aria-labelledby="' + lid + '" onclick="toggleNotify(\'' + key + '\',this)"></button>' +
+             '</div>';
+    }).join('');
+    document.getElementById('profileList').innerHTML = [
+      ['Student', c.name],
+      ['Class', c.form],
+      ['Student ID', c.id],
+      ['Guardian', 'Mrs. Michael'],
+      ['Children enrolled', Object.keys(CHILDREN).length]
+    ].map(function(r){
+      return '<div class="prof-row"><span>' + r[0] + '</span><b>' + r[1] + '</b></div>';
+    }).join('');
+  }
+  /* Updates the control in place rather than re-rendering the list, so the
+     switch that was just pressed keeps keyboard focus. */
+  function toggleNotify(key, btn){
+    const next = !NOTIFY[activeChild][key];
+    NOTIFY[activeChild][key] = next;
+    btn.setAttribute('aria-checked', String(next));
+    showToast(NOTIFY_LABELS[key].t + (next ? ' on' : ' off') + ' for ' + CHILDREN[activeChild].name + '.');
+  }
+
+  /* ---- Messages ---- */
+  function fill(text, c){ return text.replace(/\{child\}/g, c.name); }
+  function renderMessages(sub){
+    const c = CHILDREN[activeChild];
+    setText('msgWho', 'Conversations with the school about ' + c.name + '.');
+    const open = !!sub && Object.prototype.hasOwnProperty.call(THREADS, sub);
+    document.getElementById('msgListPane').hidden = open;
+    document.getElementById('msgThreadPane').hidden = !open;
+    if(!open){
+      openThreadId = '';
+      document.getElementById('msgListPanel').innerHTML = Object.keys(THREADS).map(function(id){
+        const t = THREADS[id];
+        return '<button type="button" class="msg-item" onclick="openThread(\'' + id + '\')">' +
+                 '<span class="avatar">' + t.initials + '</span>' +
+                 '<span class="msg-body">' +
+                   '<span class="msg-from">' + t.from + '</span>' +
+                   '<span class="msg-text">' + fill(t.preview, c) + '</span>' +
+                 '</span>' +
+                 '<span class="msg-time">' + t.time + '</span>' +
+               '</button>';
+      }).join('');
+      return;
+    }
+    openThreadId = sub;
+    const t = THREADS[sub];
+    document.getElementById('threadHead').innerHTML =
+      '<span class="avatar">' + t.initials + '</span>' +
+      '<span class="msg-body"><strong>' + t.from + '</strong><span>' + t.topic + ' · ' + c.name + '</span></span>';
+    document.getElementById('replyInput').value = '';
+    renderThread();
+  }
+  function renderThread(){
+    if(!openThreadId) return;
+    const c = CHILDREN[activeChild];
+    const all = THREADS[openThreadId].body.concat(REPLIES[openThreadId]);
+    document.getElementById('threadLog').innerHTML = all.map(function(m){
+      return '<div class="bubble ' + (m.them ? 'them' : 'me') + '">' + fill(m.text, c) +
+             '<time>' + m.time + '</time></div>';
+    }).join('');
+  }
+  function openThread(id){
+    writeRoute('messages', activeChild, id);
+    paintView('messages');
+    renderMessages(id);
+    const log = document.getElementById('threadLog');
+    log.scrollTop = log.scrollHeight;
+  }
+  function closeThread(){
+    writeRoute('messages', activeChild);
+    paintView('messages');
+    renderMessages('');
+    const first = document.querySelector('#msgListPanel .msg-item');
+    if(first) first.focus();
+  }
+  function sendReply(){
+    const input = document.getElementById('replyInput');
+    const text = input.value.trim();
+    if(!openThreadId) return;
+    if(!text){ showToast('Type a reply first.'); input.focus(); return; }
+    REPLIES[openThreadId].push({ them:false, text:text, time:'Just now' });
+    input.value = '';
+    renderThread();
+    const log = document.getElementById('threadLog');
+    log.scrollTop = log.scrollHeight;
+  }
+
+  /* ---- More sheet ---- */
+  function renderMore(){
+    document.getElementById('moreItems').innerHTML = MORE_ITEMS.map(function(it){
+      return '<button type="button" class="sheet-item" onclick="pickMore(\'' + it.view + '\')">' +
+               '<span class="sheet-ico">' + it.ico + '</span>' +
+               '<span class="sheet-item-txt"><b>' + it.title + '</b><span>' + it.sub + '</span></span>' +
+             '</button>';
+    }).join('');
+  }
+  function openMore(){
+    const s = document.getElementById('moreSheet');
+    if(s.classList.contains('open')) return;
+    moreTrigger = document.querySelector('.bn-item[data-more]');
+    s.classList.add('open');
+    s.setAttribute('aria-hidden','false');
+    const first = s.querySelector('.sheet-item');
+    if(first) first.focus();
+  }
+  function closeMore(){
+    const s = document.getElementById('moreSheet');
+    if(!s.classList.contains('open')) return;
+    s.classList.remove('open');
+    s.setAttribute('aria-hidden','true');
+    if(moreTrigger){ moreTrigger.focus(); moreTrigger = null; }
+  }
+  function pickMore(view){
+    closeMore();
+    showView(view);
+  }
+
+  /* ---- Routing -------------------------------------------------------
+     The URL is the single source of truth. A route is up to three
+     segments: #<view>/<child>[/<sub>], for example
+
+        #dashboard/daniel          a view for a child
+        #fees/sarah                switching child mid-view
+        #messages/sarah/thread-1   a sub-screen inside a view
+        #record/daniel             the full attendance record
+
+     so a refresh, a bookmark or a shared link all reopen the same screen.
+     showView, selectChild and openThread only *write* the hash; applyRoute
+     is the only thing that *reads* it and paints the DOM. Because
+     writeRoute skips the write when the hash already matches, one click
+     fires at most one hashchange and cannot loop.
+
+     location.hash is used in preference to history.pushState because
+     pushState can throw a SecurityError on file:// in some browsers,
+     and this prototype is opened straight from disk. */
+  function viewIds(){
+    return Array.prototype.map.call(document.querySelectorAll('.view'), function(v){
+      return v.id.replace(/^view-/, '');
+    });
+  }
+  function parseRoute(){
+    const parts = (location.hash || '').replace(/^#\/?/, '').split('/').filter(Boolean);
+    let view = parts[0] || 'dashboard';
+    if(viewIds().indexOf(view) === -1) view = 'dashboard';
+    let child = parts[1] || activeChild || 'daniel';
+    if(!CHILDREN[child]) child = 'daniel';
+    /* Only the messages view has a third segment, and it has to name a
+       real thread. Anything else is dropped, so a stale or hand-edited
+       link lands on the message list rather than an empty pane. */
+    let sub = '';
+    if(view === 'messages' && parts[2]){
+      if(Object.prototype.hasOwnProperty.call(THREADS, parts[2])) sub = parts[2];
+    }
+    return { view:view, child:child, sub:sub };
+  }
+  function writeRoute(view, child, sub){
+    let want = '#' + view + '/' + child;
+    if(sub) want += '/' + sub;
+    if(location.hash !== want) location.hash = want;
+  }
+  function paintView(id){
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    const el = document.getElementById('view-' + id);
+    if(el) el.classList.add('active');
+    setActiveNav(id);
+    closeSide();
+  }
+  /* Everything a view needs beyond the shared shell and the child figures
+     renderChild() already covers. */
+  function renderSub(view, sub){
+    if(view === 'messages') renderMessages(sub);
+    else if(view === 'record') renderRecord();
+    else if(view === 'settings') renderSettings();
+  }
+  function applyRoute(){
+    const r = parseRoute();
+    /* Close any open overlay: its contents belong to the child and view
+       that were selected when it was opened. */
+    closePay();
+    closeMore();
+    if(!childRendered || r.child !== activeChild){
+      renderChild(r.child);
+      childRendered = true;
+    }
+    paintView(r.view);
+    renderSub(r.view, r.sub);
+  }
+
+  function selectChild(key){
+    const r = parseRoute();
+    renderChild(key);
+    writeRoute(r.view, key, r.sub);
+    showToast('Showing ' + CHILDREN[key].name + ' — ' + CHILDREN[key].form);
+  }
+
+  function showView(id, el, isMobile){
+    /* Navigating via the nav always means "back to the top level of that
+       view", so any sub-screen is intentionally dropped here. */
+          writeRoute(id, activeChild);
+          paintView(id);
+          renderSub(id, '');
+        }
+        /* ---- Signing out ----
+           There is no authentication in this build, so "log out" means
+           exactly one thing: leave the portal. The public site is where the
+           links back into all four portals live. */
+        function logout(){
+          location.href = 'index.html';
+        }
+        function setActiveNav(id){
+    document.querySelectorAll('.nav-item[data-view]').forEach(function(n){
+      const on = n.dataset.view===id;
+      n.classList.toggle('active', on);
+      /* The active item is the current page, not just a styled one. */
+      if(on){ n.setAttribute('aria-current','page'); } else { n.removeAttribute('aria-current'); }
+    });
+    document.querySelectorAll('.bn-item[data-view]').forEach(function(n){
+      const on = n.dataset.view===id;
+      n.classList.toggle('active', on);
+      if(on){ n.setAttribute('aria-current','page'); } else { n.removeAttribute('aria-current'); }
+    });
+    /* More is the catch-all tab, so it takes the highlight whenever the
+       current view is not one of the three primary tabs - otherwise those
+       screens would have no highlighted tab at all on mobile. It gets no
+       aria-current because it opens a menu rather than being a page. */
+    const more = PRIMARY_VIEWS.indexOf(id) === -1;
+    document.querySelectorAll('.bn-item[data-more]').forEach(function(n){
+      n.classList.toggle('active', more);
+      n.removeAttribute('aria-current');
+    });
+  }
+
+  /* The sidebar is a visible column above 980px but an off-canvas drawer
+     at or below it, so its ARIA state depends on the viewport as well as
+     on whether the drawer is open. Deriving it in one place stops the
+     two states drifting apart, and inert takes the off-canvas links out
+     of the tab order so aria-hidden never wraps focusable content. */
+  const WIDE = window.matchMedia('(min-width: 981px)');
+  function syncSideAria(){
+    const sb = document.querySelector('.sidebar');
+    const shell = document.getElementById('appShell');
+    const visible = WIDE.matches || shell.classList.contains('menu-open');
+    sb.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    sb.toggleAttribute('inert', !visible);
+  }
+  if(WIDE.addEventListener){ WIDE.addEventListener('change', syncSideAria); }
+  else if(WIDE.addListener){ WIDE.addListener(syncSideAria); }
+
+  function openSide(){
+    document.getElementById('appShell').classList.add('menu-open');
+    syncSideAria();
+  }
+  function closeSide(){
+    document.getElementById('appShell').classList.remove('menu-open');
+    syncSideAria();
+  }
+
+  function openPay(){
+    if(CHILDREN[activeChild].fees.due <= 0){
+      showToast('No outstanding balance for ' + CHILDREN[activeChild].name + '.');
+      return;
+    }
+    payTrigger = document.querySelector('#feeCtaRow .btn');
+    const m = document.getElementById('payModal');
+    m.classList.add('open');
+    m.setAttribute('aria-hidden','false');
+    const amt = document.getElementById('payAmount');
+    amt.value = tzs(CHILDREN[activeChild].fees.due);
+    amt.focus();
+    amt.select();
+  }
+  function closePay(){
+    const m = document.getElementById('payModal');
+    m.classList.remove('open');
+    m.setAttribute('aria-hidden','true');
+    if(payTrigger){ payTrigger.focus(); payTrigger = null; }
+  }
+  function pickMethod(radio){
+    document.querySelectorAll('.radio-row').forEach(function(r){ r.classList.remove('on'); });
+    radio.closest('.radio-row').classList.add('on');
+  }
+  function submitPayment(){
+    const method = document.querySelector('input[name="payMethod"]:checked');
+    const child = CHILDREN[activeChild];
+    closePay();
+    showToast('Payment of ' + tzs(child.fees.due) + ' via ' + method.value + ' started for ' + child.name + '.');
+  }
+
+  /* Keep Tab inside an open overlay. Without this, focus walks straight
+     out of the dialog into the page behind it, which aria-modal alone
+     does not prevent for keyboard users. */
+  const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+  function trapTab(e, container){
+    if(e.key !== 'Tab') return;
+    const items = Array.prototype.filter.call(
+      container.querySelectorAll(FOCUSABLE),
+      function(el){ return el.offsetParent !== null || el === document.activeElement; }
+    );
+    if(!items.length) return;
+    const first = items[0], last = items[items.length - 1];
+    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+
+  document.addEventListener('keydown', function(e){
+    const sheet = document.getElementById('moreSheet');
+    const pay = document.getElementById('payModal');
+    const sheetOpen = sheet.classList.contains('open');
+    const payOpen = pay.classList.contains('open');
+    if(e.key === 'Escape'){
+      /* The sheet sits above the dialog, so it gets first refusal. */
+      if(sheetOpen){ closeMore(); return; }
+      if(payOpen){ closePay(); return; }
+      closeSide();
+      return;
+    }
+    if(sheetOpen) trapTab(e, sheet);
+    else if(payOpen) trapTab(e, pay);
+  });
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  }
+
+  window.addEventListener('hashchange', applyRoute);
+  /* Normalise a bare URL to a real route without adding a history entry. */
+  if(!location.hash) location.replace('#dashboard/' + activeChild);
+  renderMore();
+  applyRoute();
+</script>
+</body>
+</html>

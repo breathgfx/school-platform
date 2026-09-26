@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teacher Portal — School Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body class="page-portal">
+<div class="app-shell" id="appShell">
+  <div class="menu-overlay" onclick="closeSide()"></div>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark"><img src="assets/img/logo.webp" alt=""></span>School Platform</div>
+    <nav class="side-nav">
+      <button class="nav-item active" data-view="dashboard" onclick="showView('dashboard',this)"><span class="nav-icon">⌂</span>Dashboard</button>
+      <button class="nav-item" data-view="class" onclick="showView('class',this)"><span class="nav-icon">▣</span>My Classes</button>
+      <button class="nav-item" data-view="attendance" onclick="showView('attendance',this)"><span class="nav-icon">✓</span>Attendance</button>
+      <button class="nav-item" data-view="marks" onclick="showView('marks',this)"><span class="nav-icon">✎</span>Marks Entry</button>
+      <button class="nav-item" onclick="stub('Assignments')"><span class="nav-icon">▤</span>Assignments</button>
+      <button class="nav-item" onclick="stub('Students')"><span class="nav-icon">👥</span>Students</button>
+      <button class="nav-item" onclick="stub('Resources')"><span class="nav-icon">📚</span>Resources</button>
+      <button class="nav-item" onclick="stub('Messages')"><span class="nav-icon">💬</span>Messages</button>
+      <button class="nav-item" onclick="stub('Notifications')"><span class="nav-icon">🔔</span>Notifications</button>
+      <button class="nav-item" onclick="stub('Settings')"><span class="nav-icon">⚙</span>Settings</button>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="avatar">JJ</div>
+      <div><strong>Mr. James</strong><span>Mathematics Teacher</span></div>
+    </div>
+    <button class="logout" id="logoutBtn" onclick="logout()"><span aria-hidden="true">⏻</span>Log out<span class="logout-sub">Back to the main site</span></button>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <button class="icon-btn mobile-toggle" onclick="openSide()" aria-label="Open menu">☰</button>
+      <div>
+        <div class="eyebrow" id="topEyebrow">Thursday, 25 September 2026</div>
+        <h1 id="topTitle">Good morning, Mr. James 👋</h1>
+      </div>
+      <div class="topbar-spacer"></div>
+      <button class="icon-btn" onclick="showToast('No new notifications.')">🔔<b>3</b></button>
+      <div class="avatar">JJ</div>
+    </header>
+
+    <section class="page-content">
+
+      <!-- DASHBOARD -->
+      <div class="view active" id="view-dashboard">
+        <p style="color:var(--muted); margin-bottom:20px;">Here's your teaching overview for today.</p>
+        <div class="kpi-grid">
+          <div class="kpi-card card"><span class="label">Classes Today</span><strong id="kpiClasses">&mdash;</strong></div>
+          <div class="kpi-card card"><span class="label">Students (2A)</span><strong id="kpiStudents">&mdash;</strong></div>
+          <div class="kpi-card card"><span class="label">Assignments</span><strong>18</strong></div>
+          <div class="kpi-card card"><span class="label">Term Attendance</span><strong id="kpiAtt">&mdash;</strong></div>
+        </div>
+
+        <div class="section-title">TODAY'S CLASSES</div>
+        <div class="panel card">
+          <div class="class-row">
+            <span class="class-time">08:00</span>
+            <div class="class-info" style="flex:1;"><strong>Mathematics</strong><span>Form 2A · Room 12</span></div>
+            <button class="btn btn-primary" onclick="showView('attendance')">Take Attendance</button>
+          </div>
+          <div class="class-row">
+            <span class="class-time">10:00</span>
+            <div class="class-info" style="flex:1;"><strong>Mathematics</strong><span>Form 3B · Room 8</span></div>
+            <button class="btn btn-outline" onclick="showView('attendance')">Take Attendance</button>
+          </div>
+          <div class="class-row">
+            <span class="class-time">14:00</span>
+            <div class="class-info" style="flex:1;"><strong>Mathematics</strong><span>Form 4A · Room 15</span></div>
+            <button class="btn btn-outline" onclick="showView('attendance')">Take Attendance</button>
+          </div>
+        </div>
+
+        <div class="section-title">QUICK ACTIONS</div>
+        <div class="quick-grid">
+          <button class="quick-btn" onclick="showView('attendance')"><span class="qi">✓</span>Take Attendance</button>
+          <button class="quick-btn" onclick="showView('marks')"><span class="qi">✎</span>Enter Marks</button>
+          <button class="quick-btn" onclick="stub('Create Assignment')"><span class="qi">＋</span>New Assignment</button>
+          <button class="quick-btn" onclick="stub('Message Parent')"><span class="qi">💬</span>Message Parent</button>
+          <button class="quick-btn" onclick="stub('Upload Resource')"><span class="qi">📎</span>Upload Resource</button>
+        </div>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="view" id="view-attendance">
+        <h2 style="margin-bottom:4px;">Attendance</h2>
+        <p style="color:var(--muted); margin-bottom:18px;">Mathematics · Form 2A · 25 September 2026</p>
+        <div class="panel card">
+          <div class="table-toolbar">
+            <div class="search-box">🔎<input type="text" placeholder="Search student..." oninput="filterTable('attTable', this.value)"></div>
+          </div>
+          <div class="table-wrap">
+            <table id="attTable">
+              <thead><tr><th>#</th><th>Student</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr data-name="daniel joseph"><td>01</td><td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">DJ</div><strong>Daniel Joseph</strong></td>
+                  <td><div class="status-group"><button class="status-btn on" data-s="present" onclick="setStatus(this)">Present</button><button class="status-btn" data-s="absent" onclick="setStatus(this)">Absent</button><button class="status-btn" data-s="late" onclick="setStatus(this)">Late</button></div></td></tr>
+                <tr data-name="brian kimaro"><td>02</td><td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">BK</div><strong>Brian Kimaro</strong></td>
+                  <td><div class="status-group"><button class="status-btn on" data-s="present" onclick="setStatus(this)">Present</button><button class="status-btn" data-s="absent" onclick="setStatus(this)">Absent</button><button class="status-btn" data-s="late" onclick="setStatus(this)">Late</button></div></td></tr>
+                <tr data-name="john emmanuel"><td>03</td><td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">JE</div><strong>John Emmanuel</strong></td>
+                  <td><div class="status-group"><button class="status-btn" data-s="present" onclick="setStatus(this)">Present</button><button class="status-btn on" data-s="absent" onclick="setStatus(this)">Absent</button><button class="status-btn" data-s="late" onclick="setStatus(this)">Late</button></div></td></tr>
+                <tr data-name="grace peter"><td>04</td><td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">GP</div><strong>Grace Peter</strong></td>
+                  <td><div class="status-group"><button class="status-btn" data-s="present" onclick="setStatus(this)">Present</button><button class="status-btn" data-s="absent" onclick="setStatus(this)">Absent</button><button class="status-btn on" data-s="late" onclick="setStatus(this)">Late</button></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="attendance-summary" id="attSummary">
+            <div><strong id="cntPresent">2</strong><span>Present</span></div>
+            <div><strong id="cntAbsent">1</strong><span>Absent</span></div>
+            <div><strong id="cntLate">1</strong><span>Late</span></div>
+          </div>
+          <div class="save-row"><button class="btn btn-primary" onclick="showToast('Attendance saved.')">Save Attendance</button></div>
+        </div>
+      </div>
+
+      <!-- MARKS ENTRY -->
+      <div class="view" id="view-marks">
+        <h2 style="margin-bottom:16px;">Marks Entry</h2>
+        <div class="panel card">
+          <div class="selectors-row">
+            <select><option>Form 2A</option></select>
+            <select><option>Mathematics</option></select>
+            <select><option>Mid-Term Examination</option></select>
+          </div>
+          <div class="table-wrap">
+            <table id="marksTable">
+              <thead><tr><th>#</th><th>Student</th><th>Marks</th><th>Grade</th></tr></thead>
+              <tbody>
+                <tr><td>01</td><td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">DJ</div><strong>Daniel Joseph</strong></td>
+                  <td><input class="marks-input" type="number" min="0" max="100" value="82" oninput="onMarkInput(this)"></td><td><span class="grade-pill">A</span></td></tr>
+                <tr><td>02</td><td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">BK</div><strong>Brian Kimaro</strong></td>
+                  <td><input class="marks-input" type="number" min="0" max="100" value="74" oninput="onMarkInput(this)"></td><td><span class="grade-pill">B</span></td></tr>
+                <tr><td>03</td><td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">JE</div><strong>John Emmanuel</strong></td>
+                  <td><input class="marks-input" type="number" min="0" max="100" value="68" oninput="onMarkInput(this)"></td><td><span class="grade-pill">B</span></td></tr>
+                <tr><td>04</td><td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">GP</div><strong>Grace Peter</strong></td>
+                  <td><input class="marks-input" type="number" min="0" max="100" value="91" oninput="onMarkInput(this)"></td><td><span class="grade-pill">A+</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="avg-row"><span style="color:var(--muted); font-weight:600;">Class Average</span><strong id="marksAvg">&mdash;</strong></div>
+          <div class="save-row"><button class="btn btn-primary" onclick="showToast('Marks saved.')">Save Marks</button></div>
+        </div>
+      </div>
+
+      <!-- CLASS PROFILE -->
+      <div class="view" id="view-class">
+        <div class="class-head">
+          <div><h2>Form 2A</h2><p style="color:var(--muted); margin-top:4px;">Mathematics · Mr. James</p></div>
+          <div class="class-stats">
+            <div><strong>40</strong><span>Students</span></div>
+            <div><strong>94%</strong><span>Attendance</span></div>
+            <div><strong>78%</strong><span>Average</span></div>
+          </div>
+        </div>
+        <div class="tab-row">
+          <button class="tab-btn active" onclick="setTab(this,'attendance')" data-view="attendance">Attendance</button>
+          <button class="tab-btn" onclick="setTab(this,'marks')" data-view="marks">Marks</button>
+          <button class="tab-btn" onclick="stub('Assignments')">Assignments</button>
+        </div>
+        <div class="panel card">
+          <div class="table-toolbar">
+            <div class="search-box">🔎<input type="text" placeholder="Search students..." oninput="filterTable('classTable', this.value)"></div>
+          </div>
+          <div class="table-wrap">
+            <table id="classTable">
+            <thead><tr><th>#</th><th>Student</th><th>Mathematics</th><th>Term Attendance</th></tr></thead>
+            <tbody>
+              <tr data-name="daniel joseph" data-marks="82" data-att="94"><td>01</td><td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">DJ</div><strong>Daniel Joseph</strong></td><td>82%</td><td>94%</td></tr>
+              <tr data-name="brian kimaro" data-marks="74" data-att="92"><td>02</td><td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">BK</div><strong>Brian Kimaro</strong></td><td>74%</td><td>92%</td></tr>
+              <tr data-name="john emmanuel" data-marks="68" data-att="89"><td>03</td><td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">JE</div><strong>John Emmanuel</strong></td><td>68%</td><td>89%</td></tr>
+              <tr data-name="grace peter" data-marks="91" data-att="100"><td>04</td><td class="student-cell"><div class="avatar" style="width:28px;height:28px;font-size:.68rem;">GP</div><strong>Grace Peter</strong></td><td>91%</td><td>100%</td></tr>
+            </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="bn-item active" data-view="dashboard" onclick="showView('dashboard',this,true)"><span class="bn-icon">⌂</span>Home</button>
+    <button class="bn-item" data-view="class" onclick="showView('class',this,true)"><span class="bn-icon">▣</span>Classes</button>
+    <button class="bn-item" data-view="attendance" onclick="showView('attendance',this,true)"><span class="bn-icon">✓</span>Tasks</button>
+    <button class="bn-item" data-more onclick="openMore()"><span class="bn-icon">⋯</span>More</button>
+  </nav>
+</div>
+
+<div class="sheet" id="moreSheet" role="dialog" aria-modal="true" aria-labelledby="moreTitle" aria-hidden="true">
+  <div class="sheet-backdrop" onclick="closeMore()"></div>
+  <div class="sheet-card">
+    <div class="sheet-grip"></div>
+    <div class="sheet-head">
+      <h3 id="moreTitle">More</h3>
+      <button class="modal-close" onclick="closeMore()" aria-label="Close menu">✕</button>
+    </div>
+    <div id="moreItems"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ---- Routing -------------------------------------------------------
+     Same contract as the parent portal: the URL is the source of truth,
+     so a refresh or a shared link reopens the same screen. The teacher
+     portal has no per-child state, so a route is just #<view> - there is
+     no second segment to carry. showView only *writes* the hash and
+     applyRoute is the only thing that *reads* it and paints the DOM;
+     because writeRoute skips the write when the hash already matches, one
+     click fires at most one hashchange and cannot loop.
+
+     location.hash is used in preference to history.pushState because
+     pushState can throw a SecurityError on file:// in some browsers. */
+  function viewIds(){
+    return Array.prototype.map.call(document.querySelectorAll('.view'), function(v){
+      return v.id.replace(/^view-/, '');
+    });
+  }
+  function parseRoute(){
+    const v = (location.hash || '').replace(/^#\/?/, '').split('/').filter(Boolean)[0] || 'dashboard';
+    return viewIds().indexOf(v) === -1 ? 'dashboard' : v;
+  }
+  function writeRoute(view){
+    const want = '#' + view;
+    if(location.hash !== want) location.hash = want;
+  }
+  function paintView(id){
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    const el = document.getElementById('view-' + id);
+    if(el) el.classList.add('active');
+    setActiveNav(id);
+    closeSide();
+  }
+  function applyRoute(){ paintView(parseRoute()); }
+
+        function showView(id, el, isMobile){
+          writeRoute(id);
+          paintView(id);
+        }
+        /* ---- Signing out ----
+           There is no authentication in this build, so "log out" means
+           exactly one thing: leave the portal. The public site is where the
+           links back into all four portals live. */
+        function logout(){
+          location.href = 'index.html';
+        }
+        function setActiveNav(id){
+    document.querySelectorAll('.nav-item[data-view]').forEach(function(n){
+      const on = n.dataset.view===id;
+      n.classList.toggle('active', on);
+      /* The active item is the current page, not just a styled one. */
+      if(on){ n.setAttribute('aria-current','page'); } else { n.removeAttribute('aria-current'); }
+    });
+    document.querySelectorAll('.bn-item[data-view]').forEach(function(n){
+      const on = n.dataset.view===id;
+      n.classList.toggle('active', on);
+      if(on){ n.setAttribute('aria-current','page'); } else { n.removeAttribute('aria-current'); }
+    });
+    /* More is the catch-all tab, so it takes the highlight whenever the
+       current view is not one of the three primary tabs - otherwise Marks
+       Entry would have no highlighted tab at all on mobile. It gets no
+       aria-current because it opens a menu rather than being a page. */
+    const more = PRIMARY_VIEWS.indexOf(id) === -1;
+    document.querySelectorAll('.bn-item[data-more]').forEach(function(n){
+      n.classList.toggle('active', more);
+      n.removeAttribute('aria-current');
+    });
+  }
+
+  /* ---- More sheet ---- */
+  const PRIMARY_VIEWS = ['dashboard','class','attendance'];
+  const MORE_ITEMS = [
+    { view:'marks',   ico:'✎', title:'Marks Entry', sub:'Enter and review class marks' },
+    { stub:'Assignments', ico:'▤', title:'Assignments', sub:'Track and set classwork' },
+    { stub:'Resources',   ico:'📚', title:'Resources',   sub:'Shared files and materials' },
+    { stub:'Messages',    ico:'💬', title:'Messages',    sub:'Parent conversations' },
+    { stub:'Settings',    ico:'⚙', title:'Settings',    sub:'Account preferences' }
+  ];
+  function renderMore(){
+    document.getElementById('moreItems').innerHTML = MORE_ITEMS.map(function(it){
+      const act = it.view ? 'pickMore(\'' + it.view + '\')' : 'stubSheet(\'' + it.stub + '\')';
+      return '<button type="button" class="sheet-item" onclick="' + act + '">' +
+               '<span class="sheet-ico">' + it.ico + '</span>' +
+               '<span class="sheet-item-txt"><b>' + it.title + '</b><span>' + it.sub + '</span></span>' +
+             '</button>';
+    }).join('');
+  }
+  function openMore(){
+    const s = document.getElementById('moreSheet');
+    if(s.classList.contains('open')) return;
+    moreTrigger = document.querySelector('.bn-item[data-more]');
+    s.classList.add('open');
+    s.setAttribute('aria-hidden','false');
+    const first = s.querySelector('.sheet-item');
+    if(first) first.focus();
+  }
+  function closeMore(){
+    const s = document.getElementById('moreSheet');
+    if(!s.classList.contains('open')) return;
+    s.classList.remove('open');
+    s.setAttribute('aria-hidden','true');
+    if(moreTrigger){ moreTrigger.focus(); moreTrigger = null; }
+  }
+  function pickMore(view){ closeMore(); showView(view); }
+  function stubSheet(name){ closeMore(); stub(name); }
+
+  /* The sidebar is a visible column above 980px but an off-canvas drawer
+     at or below it, so its ARIA state depends on the viewport as well as
+     on whether the drawer is open. Deriving it in one place stops the
+     two states drifting apart, and inert takes the off-canvas links out
+     of the tab order so aria-hidden never wraps focusable content. */
+  const WIDE = window.matchMedia('(min-width: 981px)');
+  function syncSideAria(){
+    const sb = document.querySelector('.sidebar');
+    const shell = document.getElementById('appShell');
+    const visible = WIDE.matches || shell.classList.contains('menu-open');
+    sb.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    sb.toggleAttribute('inert', !visible);
+  }
+  if(WIDE.addEventListener){ WIDE.addEventListener('change', syncSideAria); }
+  else if(WIDE.addListener){ WIDE.addListener(syncSideAria); }
+
+  function openSide(){ document.getElementById('appShell').classList.add('menu-open'); syncSideAria(); }
+  function closeSide(){ document.getElementById('appShell').classList.remove('menu-open'); syncSideAria(); }
+  syncSideAria();
+
+  let moreTrigger = null;
+
+  /* Keep Tab inside the More sheet. Without this, focus walks out of the
+     overlay into the page behind it, which aria-modal alone does not
+     prevent for keyboard users. */
+  const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+  function trapTab(e, container){
+    if(e.key !== 'Tab') return;
+    const items = Array.prototype.filter.call(
+      container.querySelectorAll(FOCUSABLE),
+      function(el){ return el.offsetParent !== null || el === document.activeElement; }
+    );
+    if(!items.length) return;
+    const first = items[0], last = items[items.length - 1];
+    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+  document.addEventListener('keydown', function(e){
+    const s = document.getElementById('moreSheet');
+    if(s.classList.contains('open')){
+      if(e.key === 'Escape'){ closeMore(); return; }
+      trapTab(e, s);
+    }
+  });
+
+  function setStatus(btn){
+    const group = btn.parentElement;
+    group.querySelectorAll('.status-btn').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    updateAttendanceSummary();
+  }
+  function updateAttendanceSummary(){
+    const rows = document.querySelectorAll('#attTable tbody tr');
+    let p=0,a=0,l=0;
+    rows.forEach(r=>{
+      const on = r.querySelector('.status-btn.on');
+      if(on){ if(on.dataset.s==='present')p++; if(on.dataset.s==='absent')a++; if(on.dataset.s==='late')l++; }
+    });
+    document.getElementById('cntPresent').textContent=p;
+    document.getElementById('cntAbsent').textContent=a;
+    document.getElementById('cntLate').textContent=l;
+  }
+
+  function gradeFor(mark){
+    if(mark>=90) return 'A+';
+    if(mark>=80) return 'A';
+    if(mark>=75) return 'B+';
+    if(mark>=65) return 'B';
+    if(mark>=50) return 'C';
+    return 'F';
+  }
+  function syncMarksAvg(){
+    const inputs = document.querySelectorAll('#marksTable .marks-input');
+    let sum=0; inputs.forEach(i=>sum+=Number(i.value)||0);
+    document.getElementById('marksAvg').textContent = inputs.length ? (sum/inputs.length).toFixed(1)+'%' : '\u2014';
+  }
+  function onMarkInput(input){
+    const mark = Math.max(0, Math.min(100, Number(input.value)||0));
+    const pill = input.closest('tr').querySelector('.grade-pill');
+    pill.textContent = gradeFor(mark);
+    syncMarksAvg();
+  }
+  /* Dashboard KPIs are counted from the rendered tables so they can never drift. */
+  function syncDashboardKpis(){
+    const classes = document.querySelectorAll('.class-row').length;
+    const students = document.querySelectorAll('#attTable tbody tr').length;
+    const atts = [].map.call(document.querySelectorAll('#classTable tbody tr'), r => Number(r.dataset.att));
+    const known = atts.filter(n => Number.isFinite(n));
+    const mean = known.length ? known.reduce((a,b)=>a+b,0) / known.length : 0;
+    document.getElementById('kpiClasses').textContent = String(classes);
+    document.getElementById('kpiStudents').textContent = String(students);
+    document.getElementById('kpiAtt').textContent = Math.round(mean) + '%';
+  }
+
+  function filterTable(tableId, query){
+    const q = query.trim().toLowerCase();
+    document.querySelectorAll('#'+tableId+' tbody tr').forEach(r=>{
+      r.style.display = r.dataset.name.includes(q) ? '' : 'none';
+    });
+  }
+
+  function setTab(btn, view){
+    document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+    btn.classList.add('active');
+    if(view==='marks'){ showToast('Showing marks for Form 2A.'); }
+  }
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2400);
+  }
+  function stub(name){ showToast(name + ' — coming soon in this prototype.'); }
+
+  window.addEventListener('hashchange', applyRoute);
+  /* Normalise a bare URL to a real route without adding a history entry. */
+  if(!location.hash) location.replace('#dashboard');
+  renderMore();
+  syncMarksAvg();
+  syncDashboardKpis();
+  applyRoute();</script>
+</body>
+</html>
